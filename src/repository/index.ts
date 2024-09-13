@@ -1,9 +1,12 @@
-import ExcelRepository from './excel-repository';
+import pucExcelRepository from './puc-excel-repository';
 import StudentRepository from './student-repository';
 import ImageRepository from './image-repository';
-
+import UserRepository from './user-repository';
+import enggExcelRepository from './engg-repository';
 export {
-  ExcelRepository,
+  pucExcelRepository,
   StudentRepository,
-  ImageRepository
+  ImageRepository,
+  UserRepository,
+  enggExcelRepository
 };

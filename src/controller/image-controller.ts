@@ -19,12 +19,10 @@ const imagesController = {
       const filePath: string = req.file.path;
       console.log(filePath);
       const zip = new AdmZip(filePath);
-      const uploadDir = path.join(__dirname, '../uploads/images');
-      console.log(uploadDir)
+      const uploadDir = path.join(__dirname,"../", '../uploads/images');
 
       zip.extractAllTo(uploadDir, true); // `true` to overwrite existing files
 
-      // Optionally, delete the uploaded ZIP file after extraction
       fs.unlinkSync(filePath);
 
       return res.status(201).json({ message: "Uploaded and extracted images successfully" });
@@ -38,10 +36,18 @@ const imagesController = {
     try{
       const ID=req.params.id;
       const response=await imagesServices.getImageById(ID);
-      return response;
-    }catch(error)
+      if(response==null)
+      {
+        return res.status(404).json({message:"file doesn't exsits"});
+      }
+      return res.status(200).json(response);
+    }catch(error:any)
     {
-      return error;
+      if(error.errno===-4058)
+      {
+        return res.status(500).json({message:"file doesn't exsits"});
+      }
+      return res.status(500).json({error:error});
     }
   }
 };

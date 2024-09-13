@@ -2,34 +2,55 @@ import { studentServices } from "../services";
 import { Request, Response } from "express";
 
 const studentController = {
-  async getStudentById(req: Request, res: Response) {
+  async getPUCDetails(req: Request, res: Response) {
     try {
       const ID = req.params.id;
-      const response = await studentServices.getStudentById(ID);
+      const response = await studentServices.getPUCDetails(ID);
       if (!response) {
-        return null;
+        return res.status(404).json({message:"student is not found"});
       }
-      // Return the response and exit the function
-      return response;
+      res.status(200).json(response);
     } catch (error) {
-      console.error("Error in getStudentById:", error);
-      // Return the error response and exit the function
-      return res.status(500).json({ message: "An error occurred" });
+      res.status(500).json({error:error});
+    }
+  },
+  async getEnggDetails(req: Request, res: Response) {
+    try {
+      const ID = req.params.id;
+      const response = await studentServices.getEnggDetails(ID);
+      if (!response) {
+        return res.status(404).json({message:"student is not found"});
+      }
+      res.status(200).json(response);
+    } catch (error) {
+      res.status(500).json({error:error});
     }
   },
 
-  async getAllStudentsByBatch(req: Request, res: Response) {
+  async getPUCDetailsByBatch(req: Request, res: Response) {
     try {
       const Batch = req.params.batch;
-      const response = await studentServices.getAllStudentsByBatch(Batch);
+      const response:any= await studentServices.getPUCDetailsByBatch(Batch);
       if (!response || response.length === 0) {
-        return null;
+        return res.status(404).json({message:"Batch is not found"});
       }
-      return response;
-    } catch (error) {
-      return res.status(500).json({ message: "An error occurred" });
+      return res.status(200).json(response);
+    } catch (error:any) {
+      return res.status(500).json({ error: error.message});
     }
-  }
+  },
+  async getEnggDetailsByBatch(req: Request, res: Response) {
+    try {
+      const Batch = req.params.batch;
+      const response:any= await studentServices.getEnggDetailsByBatch(Batch);
+      if (!response || response.length === 0) {
+        return res.status(404).json({message:"Batch is not found"});
+      }
+      return res.status(200).json(response);
+    } catch (error:any) {
+      return res.status(500).json({ error: error.message});
+    }
+  },
 };
 
 export default studentController;
