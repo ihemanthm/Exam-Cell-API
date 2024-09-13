@@ -1,25 +1,45 @@
-import Record from "../models/PUC_RECORDS";
 import CrudRepository from "./crud-repository";
+import {PUC_RECORD,ENGG_RECORD} from "../models/index";
 const StudentRepository=
 {
-    async getStudentById(data:String)
+    async getPUCDetails(data:string)
     {
         try{
-            const response=await CrudRepository.findBy(Record,data);
+            const response=await CrudRepository.findBy(PUC_RECORD,{ID:data});
             return response;
         }catch(error)
         {
-            throw error;
+            return error;
         }
     },
-    async getAllStudentsByBatch(batch:String)
+    async getEnggDetails(data:string)
     {
         try{
-            const response=await CrudRepository.findAllBy(Record,batch);
+            const response=await CrudRepository.findBy(ENGG_RECORD,{ID:data});
             return response;
         }catch(error)
         {
-            throw error;
+            return error;
+        }
+    },
+    async getPUCDetailsByBatch(batch:String)
+    {
+        try{
+            const response=await CrudRepository.findAllBy(PUC_RECORD,batch);
+            return response;
+        }catch(error)
+        {
+            return error;
+        }
+    },
+    async getEnggDetailsByBatch(batch:String)
+    {
+        try{
+            const response=await CrudRepository.findAllBy(ENGG_RECORD,batch);
+            return response;
+        }catch(error)
+        {
+            return error;
         }
     },
 }

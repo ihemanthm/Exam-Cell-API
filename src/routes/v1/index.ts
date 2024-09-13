@@ -1,11 +1,11 @@
-import express, { Request, Response } from 'express';
+import express, { Request, response, Response } from 'express';
 import multer, { FileFilterCallback } from 'multer';
-import { excelController ,studentController,imagesController} from '../../controller/index';  // Ensure correct path
+import { pucExcelController,enggExcelController ,studentController,imagesController,userController} from '../../controller/index'; 
 
 const router = express.Router();
 const storage = multer.diskStorage({
   destination: (req: Request, file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) => {
-    const folder=file.fieldname==='zip'?'uploads/images':"uploads/files";
+    const folder=file.fieldname==='zip'?'uploads/images':file.fieldname==='puc'?"uploads/puc":'uploads/engg';
     cb(null, folder);
   },
   filename: (req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
@@ -14,32 +14,26 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+//PUC Routes
+router.post('/uploadPUCFiles', upload.single('puc'), pucExcelController.uploadExcel);
+router.get('/getPUCDetails/:id', studentController.getPUCDetails);
+router.get('/getPUCDetailsByBatch/:batch',studentController.getPUCDetailsByBatch);
 
-router.post('/upload', upload.single('file'), excelController.uploadExcel);
+
+//Engineering Routes
+router.post('/uploadEnggFiles', upload.single('engg'), enggExcelController.uploadExcel);
+router.get('/getEnggDetails/:id',studentController.getEnggDetails);
+router.get('/getEnggDetailsByBatch/:batch',studentController.getEnggDetailsByBatch);
+
+
+//student images Routes
 router.post('/uploadImages',upload.single('zip'),imagesController.uploadImages);
-router.get('/getStudentImage/:id',async(req:Request,res:Response)=>
-{
-  const response=await imagesController.getImageById(req,res);
-  res.send(response);
-})
-router.get('/getStudentById/:id', async (req: Request, res: Response) => {
- try{
-  const response =await studentController.getStudentById(req, res);
-  return res.send(response);
- }catch(error)
- {
-  res.status(500).send(error);
- }
-});
+router.get('/getStudentImage/:id',imagesController.getImageById);
 
-router.get('/getAllStudentsByBatch/:batch',async(req:Request,res:Response)=>
-  {
-    const response=await studentController.getAllStudentsByBatch(req,res);
-    if(!response)
-    {
-      return res.status(404).json({"message" : "Batch not found"});
-    }
-    return res.status(200).send(response);
-  })
 
+
+
+//Authentication Routes
+router.post('/signup',userController.singUp);
+router.post('/login',userController.login);
 export default router;

@@ -1,25 +1,47 @@
 import { StudentRepository } from "../repository";
 
 const studentServices={
-    async getStudentById(data:String)
+    async getPUCDetails(data:string)
     {
         try{
-            const response= StudentRepository.getStudentById(data);
+            const response= StudentRepository.getPUCDetails(data);
             return response;
         }
         catch(error)
         {
-            throw error;
+            return error;
         }
     },
-    async getAllStudentsByBatch(batch:string)
+
+    async getEnggDetails(data:string)
     {
         try{
-            const response=StudentRepository.getAllStudentsByBatch(batch);
+            const response= StudentRepository.getEnggDetails(data);
+            return response;
+        }
+        catch(error)
+        {
+            return error;
+        }
+    },
+    async getPUCDetailsByBatch(batch:string)
+    {
+        try{
+            const response=StudentRepository.getPUCDetailsByBatch(batch);
             return response;
         }catch(error)
         {
-            throw error;
+            return error;
+        }
+    },
+    async getEnggDetailsByBatch(batch:string)
+    {
+        try{
+            const response=StudentRepository.getEnggDetailsByBatch(batch);
+            return response;
+        }catch(error)
+        {
+            return error;
         }
     }
 }

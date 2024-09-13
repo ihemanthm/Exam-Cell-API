@@ -32,7 +32,7 @@ interface PUCRecord extends Document {
 }
 
 // Define the Mongoose schema for Record
-const recordSchema: Schema<PUCRecord> = new mongoose.Schema({
+const pucRecordSchema: Schema<PUCRecord> = new mongoose.Schema({
   REGULATION: { type: String },
   SNAME: { type: String },
   FNAME: { type: String },
@@ -52,8 +52,8 @@ const recordSchema: Schema<PUCRecord> = new mongoose.Schema({
           CR: { type: Number },
           GR:{type:String},
           GRPTS: { type: Number },
-          ATTEMPT:{type:String},
           TGRP: { type: Number },
+          ATTEMPT:{type:String},
         }
       ]
     }
@@ -61,6 +61,6 @@ const recordSchema: Schema<PUCRecord> = new mongoose.Schema({
 });
 
 // Create the Record model
-const PUC_RECORD = mongoose.model<PUCRecord>('Record', recordSchema);
+const PUC_RECORD = mongoose.model<PUCRecord>('PUC_Record', pucRecordSchema);
 
 export default PUC_RECORD;

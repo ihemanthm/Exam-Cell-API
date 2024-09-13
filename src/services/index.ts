@@ -1,8 +1,12 @@
-import excelServices from './excel-service';
+import pucExcelServices from './puc-excel-service';
 import studentServices from './student-service';
 import imagesServices from './image-service';
+import UserServices from './user-service';
+import enggExcelServices from './engg-excel-service';
 export{
-    excelServices,
+    pucExcelServices,
     studentServices,
-    imagesServices
+    imagesServices,
+    UserServices,
+    enggExcelServices
 };
