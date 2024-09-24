@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema } from "mongoose";
 
 // Define the Subject interface
 interface Subject {
@@ -9,8 +9,8 @@ interface Subject {
   GR: string;
   GRPTS: number;
   TGRP: number;
-  CCMY:Date;
-  ATTEMPT:string;
+  CCMY: Date;
+  ATTEMPT: string;
 }
 
 // Define the RecordEntry interface
@@ -18,6 +18,8 @@ interface Sem_Details {
   YEAR_SEM: string;
   SEM_NO: number;
   SEMCR: number;
+  TOTAL_REMS: number;
+  CURRENT_REMS: number;
   SUBJECTS: Subject[];
 }
 
@@ -28,6 +30,8 @@ interface PUCRecord extends Document {
   FNAME: string;
   ID: string;
   GRP: string;
+  TOTAL_REMS: number;
+  CURRENT_REMS: number;
   PUC_RECORDS: Sem_Details[];
 }
 
@@ -36,31 +40,35 @@ const pucRecordSchema: Schema<PUCRecord> = new mongoose.Schema({
   REGULATION: { type: String },
   SNAME: { type: String },
   FNAME: { type: String },
-  ID: { type: String ,unique:true,required:true},
+  ID: { type: String, unique: true, required: true },
   GRP: { type: String },
+  TOTAL_REMS: { type: Number },
+  CURRENT_REMS: { type: Number },
   PUC_RECORDS: [
     {
       YEAR_SEM: { type: String },
       SEM_NO: { type: Number },
       SEMCR: { type: Number },
+      SEM_TOTAL_REMS: { type: Number },
+      SEM_CURRENT_REMS: { type: Number },
       SUBJECTS: [
         {
           PNO: { type: Number },
           PCODE: { type: String },
           PNAME: { type: String },
-          CCMY:{type:Date},
+          CCMY: { type: Date },
           CR: { type: Number },
-          GR:{type:String},
+          GR: { type: String },
           GRPTS: { type: Number },
           TGRP: { type: Number },
-          ATTEMPT:{type:String},
-        }
-      ]
-    }
-  ]
+          ATTEMPT: { type: String },
+        },
+      ],
+    },
+  ],
 });
 
 // Create the Record model
-const PUC_RECORD = mongoose.model<PUCRecord>('PUC_Record', pucRecordSchema);
+const PUC_RECORD = mongoose.model<PUCRecord>("PUC_Record", pucRecordSchema);
 
 export default PUC_RECORD;

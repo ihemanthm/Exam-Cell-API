@@ -25,6 +25,7 @@ interface RowData {
   GRPTS: number;
   TGRP: number;
   ATTEMPT: string;
+  DOJ:Date;
   EXAMMY: Date;
 }
 
@@ -55,6 +56,7 @@ interface StudentRecord {
   FNAME: string;
   GRP: string;
   DOB: Date;
+  DOJ:Date;
   ENGG_RECORDS: Record[];
 }
 
@@ -100,6 +102,7 @@ const enggExcelController = {
           GRPTS,
           TGRP,
           ATTEMPT,
+          DOJ,
           EXAMMY,
         } = row;
         if (!records[ID]) {
@@ -110,6 +113,7 @@ const enggExcelController = {
             FNAME,
             GRP,
             DOB,
+            DOJ,
             ENGG_RECORDS: [],
           };
         }

@@ -42,6 +42,8 @@ interface Record {
   YEAR_SEM: string;
   SEMCR: number;
   SEM_NO: number;
+  SEM_TOTAL_REMS: number;
+  SEM_CURRENT_REMS: number;
   SUBJECTS: Subject[];
 }
 
@@ -51,6 +53,8 @@ interface StudentRecord {
   FNAME: string;
   ID: string;
   GRP: string;
+  TOTAL_REMS: number;
+  CURRENT_REMS: number;
   PUC_RECORDS: Record[];
 }
 
@@ -72,7 +76,10 @@ const pucExcelController = {
         }
       );
       const records: { [key: string]: StudentRecord } = {};
-
+      var TOTAL_REMS = 0;
+      var CURRENT_REMS = 0;
+      var SEM_TOTAL_REMS = 0;
+      var SEM_CURRENT_REMS = 0;
       data.forEach((row: RowData) => {
         const {
           REGULATION,
@@ -101,6 +108,8 @@ const pucExcelController = {
             FNAME,
             ID,
             GRP,
+            TOTAL_REMS,
+            CURRENT_REMS,
             PUC_RECORDS: [],
           };
         }
@@ -110,7 +119,14 @@ const pucExcelController = {
         );
 
         if (!record) {
-          record = { YEAR_SEM, SEM_NO, SEMCR, SUBJECTS: [] };
+          record = {
+            YEAR_SEM,
+            SEM_NO,
+            SEMCR,
+            SEM_TOTAL_REMS,
+            SEM_CURRENT_REMS,
+            SUBJECTS: [],
+          };
           records[ID].PUC_RECORDS.push(record);
         }
         record.SUBJECTS.push({
@@ -134,8 +150,19 @@ const pucExcelController = {
 
       sortedRecords.forEach((student) => {
         student.PUC_RECORDS.forEach((record) => {
+
           record.SUBJECTS.sort((a, b) => a.PNO - b.PNO);
+          
+          record.SUBJECTS.forEach((sub) => {
+            if (sub.ATTEMPT != "Regular") {
+              record.SEM_TOTAL_REMS += 1;
+              record.SEM_CURRENT_REMS += 1;
+            }
+          });
+          student.TOTAL_REMS+=record.SEM_TOTAL_REMS;
+          student.CURRENT_REMS+=record.SEM_CURRENT_REMS;
         });
+
 
         student.PUC_RECORDS.sort((a, b) => Number(a.SEM_NO) - Number(b.SEM_NO));
       });
@@ -149,10 +176,13 @@ const pucExcelController = {
         const regex = /index: (.+) dup key: { (\w+): "(.*)" }/;
         const match = error.message.match(regex);
         if (match) {
-          return res.status(500).json({  message: `Duplicate value for field ${match[2]}: ${match[3]}`,
-          });
+          return res
+            .status(500)
+            .json({
+              message: `Duplicate value for field ${match[2]}: ${match[3]}`,
+            });
         }
-       return res.status(500).json({message:"internal error"});
+        return res.status(500).json({ message: "internal error" });
       }
       return res
         .status(500)

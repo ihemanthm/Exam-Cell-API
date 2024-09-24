@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-import { MONGODB_URI } from './serverConfig';
+import mongoose from "mongoose";
+import { MONGODB_URI } from "./serverConfig";
 
-const mongoURI :string= 'mongodb://localhost:27017';
+const mongoURI: string = "mongodb://localhost:27017";
 
 export const connectToMongo = async (): Promise<void> => {
   try {

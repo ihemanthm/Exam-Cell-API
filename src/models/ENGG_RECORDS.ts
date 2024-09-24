@@ -34,6 +34,7 @@ interface ENGGRecord extends Document {
   FNAME: string;
   GRP: string;
   DOB: Date;
+  DOJ:Date;
   ENGG_RECORDS:Sem_Details[];
 }
 
@@ -48,6 +49,7 @@ const enggRecordSchema:Schema<ENGGRecord>=new mongoose.Schema(
         ID:{type:String,unique:true,required:true},
         GRP:{type:String},
         DOB:{type:Date},
+        DOJ:{type:Date},
         ENGG_RECORDS:[
             {
                 SEM:{type:Number},
