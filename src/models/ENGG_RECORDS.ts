@@ -14,19 +14,19 @@ interface Subject{
 }
 
 
-// Define the RecordEntry interface
-
+// Define the semDetails interface
 interface Sem_Details {
   SEM: number;
   SGPA: number;
   CGPA: number;
   TCR: number;
+  SEM_TOTAL_REMS:number;
+  SEM_CURRENT_REMS:number;
   SUBJECTS: Subject[];
 }
 
 
 // Define the Record interface
-
 interface ENGGRecord extends Document {
   REGULATION: string;
   ID: string;
@@ -35,6 +35,8 @@ interface ENGGRecord extends Document {
   GRP: string;
   DOB: Date;
   DOJ:Date;
+  TOTAL_REMS:number;
+  CURRENT_REMS:number;
   ENGG_RECORDS:Sem_Details[];
 }
 
@@ -50,12 +52,16 @@ const enggRecordSchema:Schema<ENGGRecord>=new mongoose.Schema(
         GRP:{type:String},
         DOB:{type:Date},
         DOJ:{type:Date},
+        TOTAL_REMS:{type:Number},
+        CURRENT_REMS:{type:Number},
         ENGG_RECORDS:[
             {
                 SEM:{type:Number},
                 SGPA:{type:Number},
                 CGPA:{type:Number},
                 TCR:{type:Number},
+                SEM_TOTAL_REMS:{type:Number},
+                SEM_CURRENT_REMS:{type:Number},
                 SUBJECTS:[
                     {
                         PNO:{type:Number},
