@@ -35,6 +35,10 @@ interface ENGGRecord extends Document {
   GRP: string;
   DOB: Date;
   DOJ:Date;
+  CONSILIDATE_CERTIFICATE_NO:string,
+  PROVISIONAL_CERTIFICATE_NO:string,
+  ORIGINAL_DEGREE_CERTIFICATE_NO:string,
+  ISSUED_SEM_CARDS_NUMBER:number,
   TOTAL_REMS:number;
   CURRENT_REMS:number;
   ENGG_RECORDS:Sem_Details[];
@@ -52,6 +56,10 @@ const enggRecordSchema:Schema<ENGGRecord>=new mongoose.Schema(
         GRP:{type:String},
         DOB:{type:Date},
         DOJ:{type:Date},
+        CONSILIDATE_CERTIFICATE_NO:{type:String},
+        PROVISIONAL_CERTIFICATE_NO:{type:String},
+        ORIGINAL_DEGREE_CERTIFICATE_NO:{type:String},
+        ISSUED_SEM_CARDS_NUMBER:{type:Number},
         TOTAL_REMS:{type:Number},
         CURRENT_REMS:{type:Number},
         ENGG_RECORDS:[

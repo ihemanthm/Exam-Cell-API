@@ -1,6 +1,6 @@
 import express, { Request, response, Response } from 'express';
 import multer, { FileFilterCallback } from 'multer';
-import { pucExcelController,enggExcelController ,studentController,imagesController,userController} from '../../controller/index'; 
+import { pucExcelController,enggExcelController ,studentController,imagesController,userController,certificateController} from '../../controller/index'; 
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -31,6 +31,9 @@ router.post('/uploadImages',upload.single('zip'),imagesController.uploadImages);
 router.get('/getStudentImage/:id',imagesController.getImageById);
 
 
+//CertificateRoutes
+router.put('/update/PUCCertificateDate',certificateController.updatePUCIssuedDate);
+router.put('/update/EnggCertificateDate',certificateController.updateEnggIssuedDate);
 
 
 //Authentication Routes

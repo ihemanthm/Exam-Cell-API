@@ -30,6 +30,7 @@ interface PUCRecord extends Document {
   FNAME: string;
   ID: string;
   GRP: string;
+  CERTIFICATE_NUMBER:string,
   TOTAL_REMS: number;
   CURRENT_REMS: number;
   PUC_RECORDS: Sem_Details[];
@@ -42,6 +43,7 @@ const pucRecordSchema: Schema<PUCRecord> = new mongoose.Schema({
   FNAME: { type: String },
   ID: { type: String, unique: true, required: true },
   GRP: { type: String },
+  CERTIFICATE_NUMBER:{type:String},
   TOTAL_REMS: { type: Number },
   CURRENT_REMS: { type: Number },
   PUC_RECORDS: [
