@@ -64,6 +64,10 @@ interface StudentRecord {
   GRP: string;
   DOB: Date;
   DOJ: Date;
+  CONSILIDATE_CERTIFICATE_NO:string,
+  PROVISIONAL_CERTIFICATE_NO:string,
+  ORIGINAL_DEGREE_CERTIFICATE_NO:string,
+  ISSUED_SEM_CARDS_NUMBER:number,
   TOTAL_REMS: number;
   CURRENT_REMS: number;
   ENGG_RECORDS: Record[];
@@ -132,6 +136,10 @@ const enggExcelController = {
             DOB,
             DOJ,
             TOTAL_REMS,
+            CONSILIDATE_CERTIFICATE_NO:'',
+            PROVISIONAL_CERTIFICATE_NO:'',
+            ORIGINAL_DEGREE_CERTIFICATE_NO:'',
+            ISSUED_SEM_CARDS_NUMBER:0,
             CURRENT_REMS,
             ENGG_RECORDS: [],
           };

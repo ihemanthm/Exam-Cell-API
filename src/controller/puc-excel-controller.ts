@@ -59,6 +59,7 @@ interface StudentRecord {
   ID: string;
   GRP: string;
   TOTAL_REMS: number;
+  CERTIFICATE_NUMBER:"",
   CURRENT_REMS: number;
   PUC_RECORDS: Record[];
 }
@@ -118,6 +119,7 @@ const pucExcelController = {
             FNAME,
             ID,
             GRP,
+            CERTIFICATE_NUMBER:"",
             TOTAL_REMS,
             CURRENT_REMS,
             PUC_RECORDS: [],

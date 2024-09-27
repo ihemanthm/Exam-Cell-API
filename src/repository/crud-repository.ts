@@ -52,6 +52,22 @@ const CrudRepository = {
       throw error;
     }
   },
+
+  async update(model:Model<any>,data:{ ID: string, [key: string]: any })
+  {
+    const {ID,...updatedData}=data;
+    try{
+      const response=await model.findOneAndUpdate(
+        {ID:ID},
+        {$set:updatedData},
+        {new:true,useFindAndModify:true});
+      return response;
+    }
+    catch(error)
+    {
+      throw error;
+    }
+  }
 };
 
 export default CrudRepository;
