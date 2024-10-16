@@ -13,7 +13,6 @@
 //   EXAMMY: Date;
 // }
 
-
 // // Define the semDetails interface
 // interface Sem_Details {
 //   SEM: number;
@@ -24,7 +23,6 @@
 //   SEM_CURRENT_REMS:number;
 //   SUBJECTS: Subject[];
 // }
-
 
 // // Define the Record interface
 // interface ENGGRecord extends Document {
@@ -43,7 +41,6 @@
 //   CURRENT_REMS:number;
 //   ENGG_RECORDS:Sem_Details[];
 // }
-
 
 // // Define the Mongoose schema for Record
 
@@ -86,8 +83,6 @@
 //             }
 //         ]
 //     });
-
-
 
 // // Create the Record model
 // const ENGG_RECORD=mongoose.model<ENGGRecord>('ENGG_Record',enggRecordSchema);
@@ -135,7 +130,7 @@ interface Current_Remedials {
 }
 
 // Define the Record interface
-interface ENGGRecord extends Document {
+interface Engg_Record extends Document {
   REGULATION: string;
   ID: string;
   SNAME: string;
@@ -149,13 +144,15 @@ interface ENGGRecord extends Document {
   ISSUED_SEM_CARDS_NUMBER: number;
   TOTAL_REMS: number;
   CURRENT_REMS: number;
+  OBTAINED_CREDITS: number[];
+  TOTAL_CREDITS: number[];
   ENGG_RECORDS: Sem_Details[];
   REMEDIAL_RECORDS: Sem_Details[];
   CURRENT_REMEDIALS: Current_Remedials[];
 }
-// Define the Mongoose schema for Record
 
-const enggRecordSchema: Schema<ENGGRecord> = new mongoose.Schema({
+// Define the Mongoose schema for Record
+const enggRecordSchema: Schema<Engg_Record> = new mongoose.Schema({
   REGULATION: { type: String },
   SNAME: { type: String },
   FNAME: { type: String },
@@ -169,6 +166,8 @@ const enggRecordSchema: Schema<ENGGRecord> = new mongoose.Schema({
   ISSUED_SEM_CARDS_NUMBER: { type: Number },
   TOTAL_REMS: { type: Number },
   CURRENT_REMS: { type: Number },
+  OBTAINED_CREDITS: { type: [Number] },
+  TOTAL_CREDITS: { type: [Number] },
   ENGG_RECORDS: [
     {
       SEM: { type: Number },
@@ -231,6 +230,9 @@ const enggRecordSchema: Schema<ENGGRecord> = new mongoose.Schema({
 });
 
 // Create the Record model
-const ENGG_RECORD = mongoose.model<ENGGRecord>("ENGG_Record", enggRecordSchema);
+const ENGG_RECORD = mongoose.model<Engg_Record>(
+  "ENGG_Record",
+  enggRecordSchema
+);
 
 export default ENGG_RECORD;

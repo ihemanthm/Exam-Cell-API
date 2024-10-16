@@ -2,66 +2,16 @@ import { Request, Response } from "express";
 import { pucExcelServices } from "../services/index";
 import xlsx from "xlsx";
 
+import{
+  Row_Data,
+  Subject,
+  Sem_Details,
+  Puc_Record
+} from "../types/puc";
+
 // Handle the upload file
 interface ExtendedRequest extends Request {
   file?: Express.Multer.File;
-}
-
-// define columns of excel file as RowData
-interface RowData {
-  REGULATION: string;
-  SNAME: string;
-  FNAME: string;
-  ID: string;
-  GRP: string;
-  YEAR_SEM: string;
-  SEM_NO: number;
-  PNO: number;
-  PCODE: string;
-  PNAME: string;
-  CR: number;
-  GR: string;
-  GRPTS: number;
-  TGRP: number;
-  CCMY: Date;
-  ATTEMPT: string;
-  SEMCR: number;
-}
-
-// define entities of each subject
-interface Subject {
-  PNO: number;
-  PCODE: string;
-  PNAME: string;
-  CR: number;
-  GR: string;
-  GRPTS: number;
-  TGRP: number;
-  ATTEMPT: string;
-  CCMY: Date;
-}
-
-// define entities of each record
-interface Record {
-  YEAR_SEM: string;
-  SEMCR: number;
-  SEM_NO: number;
-  SEM_TOTAL_REMS: number;
-  SEM_CURRENT_REMS: number;
-  SUBJECTS: Subject[];
-}
-
-// define entities of each student
-interface StudentRecord {
-  REGULATION: string;
-  SNAME: string;
-  FNAME: string;
-  ID: string;
-  GRP: string;
-  TOTAL_REMS: number;
-  CERTIFICATE_NUMBER:"",
-  CURRENT_REMS: number;
-  PUC_RECORDS: Record[];
 }
 
 const pucExcelController = {
@@ -81,7 +31,7 @@ const pucExcelController = {
       const workbook = xlsx.readFile(filePath);
       const sheetName = workbook.SheetNames[0];
       // formatting the date
-      const data: RowData[] = xlsx.utils.sheet_to_json(
+      const data: Row_Data[] = xlsx.utils.sheet_to_json(
         workbook.Sheets[sheetName],
         {
           raw: false,
@@ -89,9 +39,9 @@ const pucExcelController = {
         }
       );
 
-      const records: { [key: string]: StudentRecord } = {};
+      const records: { [key: string]: Puc_Record } = {};
       
-      data.forEach((row: RowData) => {
+      data.forEach((row: Row_Data) => {
         const {
           REGULATION,
           SNAME,
