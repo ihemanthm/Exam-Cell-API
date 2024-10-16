@@ -24,7 +24,7 @@ interface Sem_Details {
 }
 
 // Define the Record interface
-interface PUCRecord extends Document {
+interface Puc_Record extends Document {
   REGULATION: string;
   SNAME: string;
   FNAME: string;
@@ -37,7 +37,7 @@ interface PUCRecord extends Document {
 }
 
 // Define the Mongoose schema for Record
-const pucRecordSchema: Schema<PUCRecord> = new mongoose.Schema({
+const pucRecordSchema: Schema<Puc_Record> = new mongoose.Schema({
   REGULATION: { type: String },
   SNAME: { type: String },
   FNAME: { type: String },
@@ -71,6 +71,6 @@ const pucRecordSchema: Schema<PUCRecord> = new mongoose.Schema({
 });
 
 // Create the Record model
-const PUC_RECORD = mongoose.model<PUCRecord>("PUC_Record", pucRecordSchema);
+const PUC_RECORD = mongoose.model<Puc_Record>("PUC_Record", pucRecordSchema);
 
 export default PUC_RECORD;

@@ -14,6 +14,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+
 //PUC Routes
 router.post('/uploadPUCFiles', upload.single('puc'), pucExcelController.uploadExcel);
 router.get('/getPUCDetails/:id', studentController.getPUCDetails);
@@ -24,7 +25,7 @@ router.get('/getPUCDetailsByBatch/:batch',studentController.getPUCDetailsByBatch
 router.post('/uploadEnggFiles', upload.single('engg'), enggExcelController.uploadExcel);
 router.get('/getEnggDetails/:id',studentController.getEnggDetails);
 router.get('/getEnggDetailsByBatch/:batch',studentController.getEnggDetailsByBatch);
-
+router.get('/getRankListByBatch/:batch',studentController.getRankListByBatch);
 
 //student images Routes
 router.post('/uploadImages',upload.single('zip'),imagesController.uploadImages);
