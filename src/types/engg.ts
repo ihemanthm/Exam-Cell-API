@@ -4,7 +4,7 @@ export interface Row_Data {
     SNAME: string;
     FNAME: string;
     GRP: string;
-    DOB: Date;
+    DOB: Date | null;
     SEM: number;
     SGPA: number;
     CGPA: number;
@@ -17,8 +17,8 @@ export interface Row_Data {
     GRPTS: number;
     TGRP: number;
     ATTEMPT: string;
-    DOJ: Date;
-    EXAMMY: Date;
+    DOJ: Date | null;
+    EXAMMY: Date | null;
   }
   
   //define entities of Subject
@@ -31,7 +31,7 @@ export interface Row_Data {
     GRPTS: number;
     TGRP: number;
     ATTEMPT: string;
-    EXAMMY: Date;
+    EXAMMY: Date | null;
   }
   
   //define entities of Record
@@ -51,7 +51,7 @@ export interface Row_Data {
     PNO: number;
     PCODE: string;
     PNAME: string;
-    EXAMMY: Date;
+    EXAMMY: Date | null;
     CR: number;
     GR: string;
     GRPTS: number;
@@ -67,8 +67,8 @@ export interface Row_Data {
     SNAME: string;
     FNAME: string;
     GRP: string;
-    DOB: Date;
-    DOJ: Date;
+    DOB: Date | null;
+    DOJ: Date | null;
     CONSILIDATE_CERTIFICATE_NO: string;
     PROVISIONAL_CERTIFICATE_NO: string;
     ORIGINAL_DEGREE_CERTIFICATE_NO: string;

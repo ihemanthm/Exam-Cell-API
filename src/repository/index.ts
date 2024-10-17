@@ -4,11 +4,13 @@ import ImageRepository from './image-repository';
 import UserRepository from './user-repository';
 import enggExcelRepository from './engg-repository';
 import certificateRepository from './certificate-repository';
+import CrudRepository from './crud-repository';
 export {
   pucExcelRepository,
   StudentRepository,
   ImageRepository,
   UserRepository,
   enggExcelRepository,
-  certificateRepository
+  certificateRepository,
+  CrudRepository,
 };
