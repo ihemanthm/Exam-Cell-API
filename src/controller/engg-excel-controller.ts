@@ -1,4 +1,3 @@
-
 // import global/dev dependencies
 import xlsx from "xlsx";
 import { Request, Response } from "express";
@@ -24,19 +23,6 @@ interface ExtendedRequest extends Request {
 }
 
 const enggExcelController = {
-  // get student record
-  async getEnggDetails(ID: string): Promise<Engg_Record | null> {
-    return await studentServices.getEnggDetails(ID);
-  },
-
-  //update student records
-  async updateEnggRecords(data: {
-    ID: string;
-    [key: string]: any;
-  }): Promise<Response> {
-    return await CrudRepository.update(ENGG_RECORD, data);
-  },
-
   //async function to handle the excel upload
   async uploadExcel(
     req: ExtendedRequest,
@@ -61,7 +47,7 @@ const enggExcelController = {
 
       const records: { [key: string]: Engg_Record } = {};
 
-      for(const row of data){
+      for (const row of data) {
         const {
           REGULATION,
           ID,
@@ -93,7 +79,7 @@ const enggExcelController = {
           }
 
           //search for the record
-          let record: any = student.REMEDIAL_RECORDS.find(
+          let record: Sem_Details = student.REMEDIAL_RECORDS.find(
             (r: any) => r.SEM == SEM
           );
 
@@ -122,9 +108,6 @@ const enggExcelController = {
             GR,
             ATTEMPT,
           });
-
-        //   //Update the Obtained Credits
-        //   student.OBTAINED_CREDITS[SEM - 1] += TGRP;
 
           //update the CURRENT_REMEDIALS attribute
           if (
@@ -164,8 +147,8 @@ const enggExcelController = {
           student.REMEDIAL_RECORDS.sort(
             (a: any, b: any) => Number(a.SEM) - Number(b.SEM)
           );
-
-          await CrudRepository.update(ENGG_RECORD, student);
+          await student.save();
+          await studentServices.updateCredits(student.ID);
         } else {
           if (!records[ID]) {
             records[ID] = {
@@ -189,11 +172,6 @@ const enggExcelController = {
               CURRENT_REMEDIALS: [],
             };
           }
-
-          // if (SEM >= 1 && SEM <= 8) {
-          //   records[ID].OBTAINED_CREDITS[SEM - 1] += TGRP||0;
-          //   records[ID].TOTAL_CREDITS[SEM - 1] += TCR|| 0;
-          // }
 
           //search if record already exists
           let record = records[ID].ENGG_RECORDS.find((r) => r.SEM == SEM);
@@ -287,13 +265,12 @@ const enggExcelController = {
             }
           });
         });
-
         //call function to update each student data in ascnending order
         for (const student of sortedRecords) {
-          await enggExcelServices.uploadExcelFile(student);
+            await enggExcelServices.uploadExcelFile(student);
+            await studentServices.updateCredits(student.ID);
         }
       }
-
       res.status(201).json({ message: "success" });
     } catch (error: any) {
       if (error.code === 11000) {
