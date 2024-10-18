@@ -160,7 +160,7 @@ const enggExcelController = {
               DOB,
               DOJ,
               TOTAL_REMS: 0,
-              CONSILIDATE_CERTIFICATE_NO: "",
+              CONSOLIDATE_CERTIFICATE_NO: "",
               PROVISIONAL_CERTIFICATE_NO: "",
               ORIGINAL_DEGREE_CERTIFICATE_NO: "",
               ISSUED_SEM_CARDS_NUMBER: 0,

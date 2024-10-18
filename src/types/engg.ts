@@ -69,7 +69,7 @@ export interface Row_Data {
     GRP: string;
     DOB: Date | null;
     DOJ: Date | null;
-    CONSILIDATE_CERTIFICATE_NO: string;
+    CONSOLIDATE_CERTIFICATE_NO: string;
     PROVISIONAL_CERTIFICATE_NO: string;
     ORIGINAL_DEGREE_CERTIFICATE_NO: string;
     ISSUED_SEM_CARDS_NUMBER: number;
