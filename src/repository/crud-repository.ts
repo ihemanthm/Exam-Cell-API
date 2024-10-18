@@ -4,6 +4,7 @@ import { promises as fsPromises } from "fs";
 import path from "path";
 import {
   Engg_Record,
+  Sem_Details,
 } from "../types/engg"
 var res: Response;
 const CrudRepository = {
@@ -53,22 +54,16 @@ const CrudRepository = {
       if (!response || response.length === 0) {
         return null;
       }
-  
-      // const sortedStudents = response.sort((a, b) => {
-      //   const a_cgpa = calculateCGPA(a);
-      //   const b_cgpa = calculateCGPA(b);
-  
-      //   // Handle potential NaN values or divide-by-zero errors
-      //   if (isNaN(a_cgpa) || isNaN(b_cgpa)) {
-      //     // Log or handle the error appropriately
-      //     console.error("Error calculating CGPA for:", a, b);
-      //     return 0; // Or handle the case as needed
-      //   }
-  
-      //   return b_cgpa - a_cgpa; // Sort in descending order based on CGPA
-      // });
-      const sortedStudents=response.sort((a:Engg_Record,b:Engg_Record)=>{
-        return b.TOTAL_REMS-a.TOTAL_REMS;
+      
+      const sortedStudents = response.sort((a, b) => {
+         const a_lastSem=a.ENGG_RECORDS.find((sem:Sem_Details)=> sem.SEM===8);
+         const b_lastSem=b.ENGG_RECORDS.find((sem:Sem_Details)=> sem.SEM===8);
+         if(!a_lastSem){
+          return 1;
+         }else if(!b_lastSem){
+          return -1;
+         }
+         return b_lastSem.CGPA-a_lastSem.CGPA;
       });
       return sortedStudents;
     } catch (error) {
@@ -102,17 +97,4 @@ const CrudRepository = {
     }
   },
 };
-
-function calculateCGPA(student:Engg_Record) {
-  // Implement your CGPA calculation logic here
-  // Assuming you have properties like 'OBTAINED_CREDITS' and 'TOTAL_CREDITS'
-  const totalCredits = student.TOTAL_CREDITS.reduce((acc, curr) => acc + curr, 0);
-  const obtainedCredits = student.OBTAINED_CREDITS.reduce((acc, curr) => acc + curr, 0);
-
-  if (totalCredits === 0) {
-    return 0; // Handle the case of no credits
-  }
-
-  return obtainedCredits / totalCredits;
-}
 export default CrudRepository;

@@ -138,7 +138,7 @@ interface Engg_Record extends Document {
   GRP: string;
   DOB: Date;
   DOJ: Date;
-  CONSILIDATE_CERTIFICATE_NO: string;
+  CONSOLIDATE_CERTIFICATE_NO: string;
   PROVISIONAL_CERTIFICATE_NO: string;
   ORIGINAL_DEGREE_CERTIFICATE_NO: string;
   ISSUED_SEM_CARDS_NUMBER: number;
@@ -160,7 +160,7 @@ const enggRecordSchema: Schema<Engg_Record> = new mongoose.Schema({
   GRP: { type: String },
   DOB: { type: Date },
   DOJ: { type: Date },
-  CONSILIDATE_CERTIFICATE_NO: { type: String },
+  CONSOLIDATE_CERTIFICATE_NO: { type: String },
   PROVISIONAL_CERTIFICATE_NO: { type: String },
   ORIGINAL_DEGREE_CERTIFICATE_NO: { type: String },
   ISSUED_SEM_CARDS_NUMBER: { type: Number },
