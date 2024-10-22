@@ -6,6 +6,7 @@ import {
   Engg_Record,
   Sem_Details,
 } from "../types/engg"
+import { Puc_Record } from "../types/puc";
 var res: Response;
 const CrudRepository = {
   async create(model: Model<any>, data: {}) {
@@ -24,12 +25,25 @@ const CrudRepository = {
       throw error;
     }
   },
-  async findBy(model: Model<any>, data: {}) {
+  async Engg_findBy(model: Model<any>, data: {}): Promise<Engg_Record | null | undefined>{
     try {
-      const response = await model.findOne( {...data} );
-      if (!response) {
-        return null;
-      }
+      const response:Engg_Record | null= await model.findOne( {...data} );
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async Puc_findBy(model: Model<any>, data: {}): Promise<Puc_Record | null | undefined>{
+    try {
+      const response:Puc_Record | null= await model.findOne( {...data} );
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async findBy(model: Model<any>, data: {}){
+    try {
+      const response= await model.findOne( {...data} );
       return response;
     } catch (error) {
       console.log(error);
@@ -52,23 +66,15 @@ const CrudRepository = {
       const response = await model.find({ REGULATION: batch });
   
       if (!response || response.length === 0) {
-        return null;
+        return response;
       }
       
       const sortedStudents = response.sort((a, b) => {
-         const a_lastSem=a.ENGG_RECORDS.find((sem:Sem_Details)=> sem.SEM===8);
-         const b_lastSem=b.ENGG_RECORDS.find((sem:Sem_Details)=> sem.SEM===8);
-         if(!a_lastSem){
-          return 1;
-         }else if(!b_lastSem){
-          return -1;
-         }
-         return b_lastSem.CGPA-a_lastSem.CGPA;
+         return calculateCGPA(b) - calculateCGPA(a);
       });
       return sortedStudents;
-    } catch (error) {
-      console.log(error);
-      return "An error occurred while fetching data";
+    } catch (error:any) {
+      console.log(error.message);
     }
   },
   async imageBy(ID: string) {
@@ -97,4 +103,16 @@ const CrudRepository = {
     }
   },
 };
+function calculateCGPA(a:Engg_Record):number{
+  let a_obtainedCredits=0;
+  let a_totalCredits=0;
+  for(let i=0;i<8;i++){
+    a_obtainedCredits+=a.OBTAINED_CREDITS[i];
+    a_totalCredits+=a.TOTAL_CREDITS[i];
+  }
+  if(a_totalCredits===0){
+    return 0;
+  }
+  return a_obtainedCredits/a_totalCredits;
+}
 export default CrudRepository;
