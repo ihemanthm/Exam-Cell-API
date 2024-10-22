@@ -11,16 +11,15 @@ Examination Cell project's main objective is to develop a fully functional webpa
    ```bash
        git clone https://github.com/<username>/<Exam-Cell-API>.git
    ```
-   > [!NOTE]
-   > Replace <username> and <Exam-Cell-API> with your github username and repository name
+   > Replace _\<username\>_ and _\<Exam-Cell-API\>_ with your github username and repository name
 
 2. **Prerequisites**
-    - Install or update node in your computer via [nodejs.org]{https://nodejs.org/}
+    - Install or update node in your computer via [nodejs.org](https://nodejs.org/)
     - Check for the version of node in your computer
         ```bash
             node -v
         ``` 
-    - node 14.x or above is recommended.
+        > node 14.x or above is recommended.
 
 3. **Install Dependencies**
 

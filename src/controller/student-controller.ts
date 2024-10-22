@@ -75,7 +75,6 @@ const studentController = {
       if(!records || records.length===0){
         return res.status(404).json({message:"Batch is not found"});
       }
-      // return res.status(200).json(response);
 
       const workbook=new ExcelJS.Workbook();
       const worksheet=workbook.addWorksheet(`${batch}`);

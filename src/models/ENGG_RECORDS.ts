@@ -114,6 +114,21 @@ interface Sem_Details {
   SUBJECTS: Subject[];
 }
 
+interface Remedial_Sem_Details{
+  EXAMMY: Date;
+  SUBJECTS: Subject[];
+}
+
+interface Remedial_Details {
+  SEM: number;
+  SGPA: number;
+  CGPA: number;
+  TCR: number;
+  SEM_TOTAL_REMS: number;
+  SEM_CURRENT_REMS: number;
+  REMEDIAL_DATES:Remedial_Sem_Details[];
+}
+
 //Deifne Current_Remedials
 interface Current_Remedials {
   SEM: number;
@@ -147,7 +162,7 @@ interface Engg_Record extends Document {
   OBTAINED_CREDITS: number[];
   TOTAL_CREDITS: number[];
   ENGG_RECORDS: Sem_Details[];
-  REMEDIAL_RECORDS: Sem_Details[];
+  REMEDIAL_RECORDS: Remedial_Details[];
   CURRENT_REMEDIALS: Current_Remedials[];
 }
 
@@ -197,18 +212,23 @@ const enggRecordSchema: Schema<Engg_Record> = new mongoose.Schema({
       SGPA: { type: Number },
       CGPA: { type: Number },
       TCR: { type: Number },
-      SUBJECTS: [
+      REMEDIAL_DATES:[
         {
-          PNO: { type: Number },
-          PCODE: { type: String },
-          PNAME: { type: String },
           EXAMMY: { type: Date },
-          CR: { type: Number },
-          GR: { type: String },
-          GRPTS: { type: Number },
-          TGRP: { type: Number },
-          ATTEMPT: { type: String },
-        },
+          SUBJECTS: [
+            {
+              PNO: { type: Number },
+              PCODE: { type: String },
+              PNAME: { type: String },
+              EXAMMY: { type: Date },
+              CR: { type: Number },
+              GR: { type: String },
+              GRPTS: { type: Number },
+              TGRP: { type: Number },
+              ATTEMPT: { type: String },
+            },
+          ],
+        }
       ],
     },
   ],
