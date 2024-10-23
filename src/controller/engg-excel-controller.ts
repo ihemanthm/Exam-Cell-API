@@ -100,9 +100,10 @@ const enggExcelController = {
             };
             student.REMEDIAL_RECORDS.push(record);
           }
+          record=student.REMEDIAL_RECORDS.find((r: any) => r.SEM == SEM);
 
           let Dated_Record: Remedial_Sem_Details | undefined =
-            record.REMEDIAL_DATES.find(
+            record?.REMEDIAL_DATES.find(
               (r: Remedial_Sem_Details) =>
                 new Date(r.EXAMMY).getTime() === new Date(EXAMMY).getTime()
             );
@@ -111,9 +112,13 @@ const enggExcelController = {
               EXAMMY: EXAMMY,
               SUBJECTS: [],
             };
-            record.REMEDIAL_DATES.push(Dated_Record);
+            record?.REMEDIAL_DATES.push(Dated_Record);
           }
-          Dated_Record.SUBJECTS.push({
+          Dated_Record=record?.REMEDIAL_DATES.find(
+            (r: Remedial_Sem_Details) =>
+              new Date(r.EXAMMY).getTime() === new Date(EXAMMY).getTime()
+          );
+          Dated_Record?.SUBJECTS.push({
             PNO,
             PCODE,
             PNAME,
@@ -152,6 +157,7 @@ const enggExcelController = {
           // await student.save();
           await CrudRepository.update(ENGG_RECORD, student);
           await studentServices.updateCredits(student.ID);
+
         } else {
           if (!records[ID]) {
             records[ID] = {
