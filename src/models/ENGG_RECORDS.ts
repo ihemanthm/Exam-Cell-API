@@ -116,6 +116,8 @@ interface Sem_Details {
 
 interface Remedial_Sem_Details{
   EXAMMY: Date;
+  SGPA:number;
+  CGPA:number;
   SUBJECTS: Subject[];
 }
 
@@ -215,6 +217,8 @@ const enggRecordSchema: Schema<Engg_Record> = new mongoose.Schema({
       REMEDIAL_DATES:[
         {
           EXAMMY: { type: Date },
+          SGPA:{type:Number},
+          CGPA:{type:Number},
           SUBJECTS: [
             {
               PNO: { type: Number },
