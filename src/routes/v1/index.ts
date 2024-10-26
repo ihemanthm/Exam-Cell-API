@@ -1,6 +1,6 @@
 import express, { Request, response, Response } from 'express';
 import multer, { FileFilterCallback } from 'multer';
-import { pucExcelController,enggExcelController ,studentController,imagesController,userController,certificateController} from '../../controller/index'; 
+import { pucExcelController,enggExcelController ,studentController,imagesController,userController,certificateController, BackupController} from '../../controller/index'; 
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -41,3 +41,7 @@ router.put('/update/EnggCertificateDate',certificateController.updateEnggIssuedD
 router.post('/signup',userController.singUp);
 router.post('/login',userController.login);
 export default router;
+
+//Backup Routes
+router.get('/PucBackup',BackupController.pucBackup);
+router.get('/EnggBackup',BackupController.enggBackup);

@@ -110,6 +110,8 @@ const enggExcelController = {
           if (!Dated_Record) {
             Dated_Record = {
               EXAMMY: EXAMMY,
+              SGPA:0,
+              CGPA:0,
               SUBJECTS: [],
             };
             record?.REMEDIAL_DATES.push(Dated_Record);
@@ -183,7 +185,7 @@ const enggExcelController = {
           }
 
           //search if record already exists
-          let record = records[ID].ENGG_RECORDS.find((r) => r.SEM == SEM);
+          let record = records[ID].ENGG_RECORDS.find((r) => r.SEM === SEM);
 
           //create new record if not exists
           if (!record) {

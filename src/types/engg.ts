@@ -50,6 +50,8 @@ export interface Row_Data {
   // group them based on EXAMMY
   export interface Remedial_Sem_Details{
     EXAMMY: Date;
+    CGPA:number;
+    SGPA:number;
     SUBJECTS: Subject[];
   }
 
