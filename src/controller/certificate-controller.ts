@@ -1,10 +1,12 @@
-import e, { Request,Response } from "express";
+import { Request,Response } from "express";
 import { certificateServices } from "../services/index";
 const certificateController={
    async updatePUCIssuedDate (req:Request,res:Response)
    {
         try
         {
+            const {SCANNED_COPY, ...otherAttributes}=req.body
+            
             const response=await certificateServices.updatePUCIssuedDate(req.body);
             return res.status(200).json(response);
         }catch(error)

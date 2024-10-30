@@ -1,13 +1,10 @@
 import { Model } from "mongoose";
-import { Response } from "express";
 import { promises as fsPromises } from "fs";
 import path from "path";
 import {
   Engg_Record,
-  Sem_Details,
 } from "../types/engg"
 import { Puc_Record } from "../types/puc";
-var res: Response;
 const CrudRepository = {
   async create(model: Model<any>, data: {}) {
     try {

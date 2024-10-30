@@ -1,4 +1,3 @@
-import { response } from 'express';
 import {Users} from '../models/index';
 import CrudRepository from './crud-repository';
 
