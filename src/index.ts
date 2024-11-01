@@ -22,7 +22,7 @@ app.use('/uploads/images',Express.static("uploads/images"));
 
 app.use("/api", router);
 app.get("/", (req, res) => {
-  res.send("Welcome to Excel ");
+  res.send("Welcome to Examcell ");
 });
 console.log(process.env.MONGODB_URI);
 console.log(process.env.PORT);

@@ -15,7 +15,6 @@ import {
   Subject,
   Sem_Details,
   Engg_Record,
-  Current_Remedials,
   Remedial_Sem_Details,
   Remedial_Details,
 } from "../types/engg";
@@ -134,10 +133,12 @@ const enggExcelController = {
 
           //update the CURRENT_REMEDIALS attribute
           if (!invalidGrades.includes(GR.toUpperCase())) {
+            student.CURRENT_REMS-=1;
             student.CURRENT_REMEDIALS = student.CURRENT_REMEDIALS.filter(
               (sub: any) => sub.PCODE !== PCODE
             );
           }
+
 
           // Sort records based on paperNumber
           student.REMEDIAL_RECORDS.forEach((sem: Remedial_Details) => {

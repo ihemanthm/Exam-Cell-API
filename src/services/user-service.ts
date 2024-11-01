@@ -1,6 +1,5 @@
 import { UserRepository } from "../repository";
 import { Users } from "../models/index";
-import sendMail from '../utils/sendMail';
 interface singInData {
   name: string;
   email: string;

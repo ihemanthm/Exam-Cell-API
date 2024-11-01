@@ -1,6 +1,5 @@
 import ExcelJS from "exceljs";
 import { ENGG_RECORD, PUC_RECORD } from "../models";
-import axios from "axios";
 import {
   Engg_Record,
   Remedial_Details,

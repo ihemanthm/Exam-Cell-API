@@ -106,7 +106,6 @@ const pucExcelController = {
           });
 
           // update Subject details
-          
           subject.CR=CR;
           subject.GR=GR;
           subject.GRPTS=GRPTS;
@@ -114,6 +113,11 @@ const pucExcelController = {
           subject.CCMY=CCMY;
           subject.ATTEMPT=ATTEMPT;
           subject.TOTAL_ATTEMPTS+=1;
+
+          //update CURRENT_REMS
+          if(!invalidGrades.includes(GR.toUpperCase())){
+            student.CURRENT_REMS-=1;
+          }
 
           //update the modifications in the database
           await CrudRepository.update(PUC_RECORD,student);
@@ -200,7 +204,7 @@ const pucExcelController = {
 
         //upload the excel file
         for (const student of sortedRecords) {
-          await pucExcelServices.uploadExcelFile(student); // This will insert each student in ascending order
+          await pucExcelServices.uploadExcelFile(student);
         }
       }
       //return status code
