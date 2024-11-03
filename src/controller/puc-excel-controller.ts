@@ -61,10 +61,9 @@ const pucExcelController = {
           ATTEMPT,
         } = row;
 
+        const student: Puc_Record | undefined | null =
+          await studentServices.getPUCDetails(ID);
         if (ATTEMPT.toUpperCase() === "REMEDIAL") {
-          const student: Puc_Record | undefined | null =
-            await studentServices.getPUCDetails(ID);
-
           if (!student) {
             return res
               .status(400)
@@ -74,19 +73,20 @@ const pucExcelController = {
           const semester: Sem_Details | undefined = student.PUC_RECORDS.find(
             (sem: Sem_Details) => sem.SEM_NO == SEM_NO
           );
-          if(!semester){
-            return res.status(400).json({message:`No semester-${SEM_NO} found for student Id:${ID} `});
+          if (!semester) {
+            return res.status(400).json({
+              message: `No semester-${SEM_NO} found for student Id:${ID} `,
+            });
           }
 
           const subject: Subject | undefined = semester.SUBJECTS.find(
-            (sub: Subject) => sub.PNO == PNO && invalidGrades.includes(sub.GR.toUpperCase())
+            (sub: Subject) =>
+              sub.PNO == PNO && invalidGrades.includes(sub.GR.toUpperCase())
           );
           if (!subject) {
-            return res
-              .status(400)
-              .json({
-                message: `No remedial for student with ID:${ID} in subject ${PNAME}`,
-              });
+            return res.status(400).json({
+              message: `No remedial for student with ID:${ID} in subject ${PNAME}`,
+            });
           }
 
           student.REMEDIAL_RECORDS.push({
@@ -96,81 +96,145 @@ const pucExcelController = {
             PNO,
             PCODE,
             PNAME,
-            CR:subject.CR,
-            GR:subject.GR,
-            GRPTS:subject.GRPTS,
-            TGRP:subject.TGRP,
-            CCMY:subject.CCMY,
-            ATTEMPT:subject.ATTEMPT,
-            TOTAL_ATTEMPTS:subject.TOTAL_ATTEMPTS,
+            CR: subject.CR,
+            GR: subject.GR,
+            GRPTS: subject.GRPTS,
+            TGRP: subject.TGRP,
+            CCMY: subject.CCMY,
+            ATTEMPT: subject.ATTEMPT,
+            TOTAL_ATTEMPTS: subject.TOTAL_ATTEMPTS,
           });
 
           // update Subject details
-          subject.CR=CR;
-          subject.GR=GR;
-          subject.GRPTS=GRPTS;
-          subject.TGRP=TGRP;
-          subject.CCMY=CCMY;
-          subject.ATTEMPT=ATTEMPT;
-          subject.TOTAL_ATTEMPTS+=1;
+          subject.CR = CR;
+          subject.GR = GR;
+          subject.GRPTS = GRPTS;
+          subject.TGRP = TGRP;
+          subject.CCMY = CCMY;
+          subject.ATTEMPT = ATTEMPT;
+          subject.TOTAL_ATTEMPTS += 1;
 
           //update CURRENT_REMS
-          if(!invalidGrades.includes(GR.toUpperCase())){
-            student.CURRENT_REMS-=1;
+          if (!invalidGrades.includes(GR.toUpperCase())) {
+            student.CURRENT_REMS -= 1;
           }
 
           //update the modifications in the database
-          await CrudRepository.update(PUC_RECORD,student);
+          await CrudRepository.update(PUC_RECORD, student);
+
         } else {
-          if (!records[ID]) {
-            records[ID] = {
-              REGULATION,
-              SNAME,
-              FNAME,
-              ID,
-              GRP,
-              CERTIFICATE_NUMBER: "",
-              TOTAL_REMS,
-              CURRENT_REMS,
-              PUC_RECORDS: [],
-              REMEDIAL_RECORDS: [],
-            };
-          }
-          
-          //search if the record is already there
-          let record = records[ID].PUC_RECORDS.find(
-            (r) => r.YEAR_SEM === YEAR_SEM && r.SEM_NO === SEM_NO
-          );
+          if (!student) {
+            console.log("new entry");
+            if (!records[ID]) {
+              records[ID] = {
+                REGULATION,
+                SNAME,
+                FNAME,
+                ID,
+                GRP,
+                CERTIFICATE_NUMBER: "",
+                TOTAL_REMS,
+                CURRENT_REMS,
+                PUC_RECORDS: [],
+                REMEDIAL_RECORDS: [],
+              };
+            }
 
-          //if threre is no such record create one
-          if (!record) {
-            record = {
-              YEAR_SEM,
-              SEM_NO,
-              SEMCR,
-              SEM_TOTAL_REMS,
-              SEM_CURRENT_REMS,
-              SUBJECTS: [],
-            };
-            records[ID].PUC_RECORDS.push(record);
-          }
+            //search if the record is already there
+            let record = records[ID].PUC_RECORDS.find(
+              (r) => r.YEAR_SEM === YEAR_SEM && r.SEM_NO === SEM_NO
+            );
 
-          // push the data
-          record.SUBJECTS.push({
-            PNO,
-            PCODE,
-            PNAME,
-            CR,
-            GRPTS,
-            TGRP,
-            CCMY,
-            GR,
-            ATTEMPT,
-            TOTAL_ATTEMPTS: 1,
-          });
+            //if threre is no such record create one
+            if (!record) {
+              record = {
+                YEAR_SEM,
+                SEM_NO,
+                SEMCR,
+                SEM_TOTAL_REMS,
+                SEM_CURRENT_REMS,
+                SUBJECTS: [],
+              };
+              records[ID].PUC_RECORDS.push(record);
+            }
+
+            record = records[ID].PUC_RECORDS.find(
+              (r) => r.YEAR_SEM === YEAR_SEM && r.SEM_NO === SEM_NO
+            );
+
+            // push the data
+            record?.SUBJECTS.push({
+              PNO,
+              PCODE,
+              PNAME,
+              CR,
+              GRPTS,
+              TGRP,
+              CCMY,
+              GR,
+              ATTEMPT,
+              TOTAL_ATTEMPTS: 1,
+            });
+
+          } else {
+
+            var puc_record: Sem_Details | undefined = student.PUC_RECORDS.find(
+              (puc_record: Sem_Details) => puc_record.SEM_NO == SEM_NO
+            );
+
+            if (!puc_record) {
+              puc_record = {
+                YEAR_SEM,
+                SEM_NO,
+                SEMCR,
+                SEM_TOTAL_REMS,
+                SEM_CURRENT_REMS,
+                SUBJECTS: [],
+              };
+              student.PUC_RECORDS.push(puc_record);
+            }
+
+            puc_record = student.PUC_RECORDS.find(
+              (puc_record: Sem_Details) => puc_record.SEM_NO == SEM_NO
+            );
+
+            var subject_record: Subject | undefined = puc_record?.SUBJECTS.find(
+              (subject_record: Subject) => subject_record.PNO == PNO
+            );
+
+            if (!subject_record) {
+              subject_record = {
+                PNO,
+                PCODE,
+                PNAME,
+                CR,
+                GRPTS,
+                TGRP,
+                CCMY,
+                GR,
+                ATTEMPT,
+                TOTAL_ATTEMPTS: 1,
+              };
+
+              puc_record?.SUBJECTS.push(subject_record);
+            }else{
+
+              subject_record.PNO=PNO;
+              subject_record.PCODE=PCODE;
+              subject_record.PNAME=PNAME;
+              subject_record.CR=CR;
+              subject_record.GRPTS=GRPTS;
+              subject_record.TGRP=TGRP;
+              subject_record.CCMY=CCMY;
+              subject_record.GR=GR;
+              subject_record.ATTEMPT=ATTEMPT;
+
+            }
+            await CrudRepository.update(PUC_RECORD, student);
+          }
         }
       }
-      if (records) {
+      if (Object.values(records).length>0) {
         //sort the records based on student ID number
         const sortedRecords = Object.values(records).sort((a, b) => {
           const aNumericID = parseInt(a.ID.slice(1), 10); // Extract numeric part of ID
@@ -210,18 +274,6 @@ const pucExcelController = {
       //return status code
       return res.status(201).json({ message: "Uploaded Excel successfully" });
     } catch (error: any) {
-      if (error.code === 11000) {
-        const regex = /index: (.+) dup key: { (\w+): "(.*)" }/;
-        const match = error.message.match(regex);
-
-        // check for duplicate records
-        if (match) {
-          return res.status(500).json({
-            message: `Duplicate value for field ${match[2]}: ${match[3]}`,
-          });
-        }
-        return res.status(500).json({ message: "internal error" });
-      }
       return res
         .status(500)
         .json({ message: "An error occurred while processing the file" });

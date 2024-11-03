@@ -74,6 +74,21 @@ const CrudRepository = {
       console.log(error.message);
     }
   },
+  async groupByRegulation(model:Model<any>){
+    try{
+      const response = await model.aggregate([
+        {
+          $group: {
+            _id: "$REGULATION",
+            records: { $push: "$$ROOT" },
+          },
+        },
+      ]);
+      return response;
+    }catch(error){
+      console.log(error);
+    }
+  },
   async imageBy(ID: string) {
     const filePath = path.join(__dirname, "../","../uploads/images/", `${ID}.png`);
     try {
