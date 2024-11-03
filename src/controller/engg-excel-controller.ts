@@ -73,11 +73,11 @@ const enggExcelController = {
           DOJ,
           EXAMMY,
         } = row;
-        if (ATTEMPT.toUpperCase() === "REMEDIAL") {
-          // get student by Id from model
-          const student: Engg_Record | undefined | null =
-            await studentServices.getEnggDetails(ID);
+        // get student by Id from model
+        const student: Engg_Record | undefined | null =
+          await studentServices.getEnggDetails(ID);
 
+        if (ATTEMPT.toUpperCase() === "REMEDIAL") {
           if (!student) {
             return res.status(404).json({ message: "Student Not Found" });
           }
@@ -99,7 +99,7 @@ const enggExcelController = {
             };
             student.REMEDIAL_RECORDS.push(record);
           }
-          record=student.REMEDIAL_RECORDS.find((r: any) => r.SEM == SEM);
+          record = student.REMEDIAL_RECORDS.find((r: any) => r.SEM == SEM);
 
           let Dated_Record: Remedial_Sem_Details | undefined =
             record?.REMEDIAL_DATES.find(
@@ -109,13 +109,13 @@ const enggExcelController = {
           if (!Dated_Record) {
             Dated_Record = {
               EXAMMY: EXAMMY,
-              SGPA:0,
-              CGPA:0,
+              SGPA: 0,
+              CGPA: 0,
               SUBJECTS: [],
             };
             record?.REMEDIAL_DATES.push(Dated_Record);
           }
-          Dated_Record=record?.REMEDIAL_DATES.find(
+          Dated_Record = record?.REMEDIAL_DATES.find(
             (r: Remedial_Sem_Details) =>
               new Date(r.EXAMMY).getTime() === new Date(EXAMMY).getTime()
           );
@@ -133,12 +133,11 @@ const enggExcelController = {
 
           //update the CURRENT_REMEDIALS attribute
           if (!invalidGrades.includes(GR.toUpperCase())) {
-            student.CURRENT_REMS-=1;
+            student.CURRENT_REMS -= 1;
             student.CURRENT_REMEDIALS = student.CURRENT_REMEDIALS.filter(
               (sub: any) => sub.PCODE !== PCODE
             );
           }
-
 
           // Sort records based on paperNumber
           student.REMEDIAL_RECORDS.forEach((sem: Remedial_Details) => {
@@ -160,63 +159,122 @@ const enggExcelController = {
           // await student.save();
           await CrudRepository.update(ENGG_RECORD, student);
           await studentServices.updateCredits(student.ID);
-
         } else {
-          if (!records[ID]) {
-            records[ID] = {
-              REGULATION,
-              ID,
-              SNAME,
-              FNAME,
-              GRP,
-              DOB,
-              DOJ,
-              TOTAL_REMS: 0,
-              CONSOLIDATE_CERTIFICATE_NO: "",
-              PROVISIONAL_CERTIFICATE_NO: "",
-              ORIGINAL_DEGREE_CERTIFICATE_NO: "",
-              ISSUED_SEM_CARDS_NUMBER: 0,
-              CURRENT_REMS: 0,
-              OBTAINED_CREDITS: new Array(8).fill(0),
-              TOTAL_CREDITS: new Array(8).fill(0),
-              ENGG_RECORDS: [],
-              REMEDIAL_RECORDS: [],
-              CURRENT_REMEDIALS: [],
-            };
+          if (!student) {
+            if (!records[ID]) {
+              records[ID] = {
+                REGULATION,
+                ID,
+                SNAME,
+                FNAME,
+                GRP,
+                DOB,
+                DOJ,
+                TOTAL_REMS: 0,
+                CONSOLIDATE_CERTIFICATE_NO: "",
+                PROVISIONAL_CERTIFICATE_NO: "",
+                ORIGINAL_DEGREE_CERTIFICATE_NO: "",
+                ISSUED_SEM_CARDS_NUMBER: 0,
+                CURRENT_REMS: 0,
+                OBTAINED_CREDITS: new Array(8).fill(0),
+                TOTAL_CREDITS: new Array(8).fill(0),
+                ENGG_RECORDS: [],
+                REMEDIAL_RECORDS: [],
+                CURRENT_REMEDIALS: [],
+              };
+            }
+
+            //search if record already exists
+            let record = records[ID].ENGG_RECORDS.find((r) => r.SEM === SEM);
+
+            //create new record if not exists
+            if (!record) {
+              record = {
+                SEM,
+                CGPA,
+                SGPA,
+                TCR,
+                SEM_TOTAL_REMS: 0,
+                SEM_CURRENT_REMS: 0,
+                SUBJECTS: [],
+              };
+              records[ID].ENGG_RECORDS.push(record);
+            }
+
+            //store the subjects data for each subject
+            record.SUBJECTS.push({
+              PNO,
+              PCODE,
+              PNAME,
+              CR,
+              GRPTS,
+              TGRP,
+              EXAMMY,
+              GR,
+              ATTEMPT,
+            });
+          } else {
+            
+            var engg_record: Sem_Details | undefined =
+              student.ENGG_RECORDS.find(
+                (engg_record: Sem_Details) => engg_record.SEM == SEM
+              );
+
+            if (!engg_record) {
+              engg_record = {
+                SEM,
+                CGPA,
+                SGPA,
+                TCR,
+                SEM_TOTAL_REMS: 0,
+                SEM_CURRENT_REMS: 0,
+                SUBJECTS: [],
+              };
+              student.ENGG_RECORDS.push(engg_record);
+            }
+
+            engg_record = student.ENGG_RECORDS.find(
+              (engg_record: Sem_Details) => engg_record.SEM == SEM
+            );
+
+            var subject_record: Subject | undefined =
+              engg_record?.SUBJECTS.find(
+                (subject_record: Subject) => subject_record.PNO == PNO
+              );
+
+            if (!subject_record) {
+              subject_record = {
+                PNO,
+                PCODE,
+                PNAME,
+                CR,
+                GRPTS,
+                TGRP,
+                EXAMMY,
+                GR,
+                ATTEMPT,
+              };
+              engg_record?.SUBJECTS.push(subject_record);
+            }else{
+              subject_record.PNO=PNO;
+              subject_record.PCODE=PCODE;
+              subject_record.PNAME=PNAME;
+              subject_record.CR=CR;
+              subject_record.GR=GR;
+              subject_record.GRPTS=GRPTS;
+              subject_record.TGRP=TGRP;
+              subject_record.EXAMMY=EXAMMY;
+              subject_record.ATTEMPT=ATTEMPT;
+            }
+
+            if (student) {
+              await CrudRepository.update(ENGG_RECORD, student);
+              await studentServices.updateCredits(student.ID);
+            }
           }
-
-          //search if record already exists
-          let record = records[ID].ENGG_RECORDS.find((r) => r.SEM === SEM);
-
-          //create new record if not exists
-          if (!record) {
-            record = {
-              SEM,
-              CGPA,
-              SGPA,
-              TCR,
-              SEM_TOTAL_REMS: 0,
-              SEM_CURRENT_REMS: 0,
-              SUBJECTS: [],
-            };
-            records[ID].ENGG_RECORDS.push(record);
-          }
-
-          //store the subjects data for each subject
-          record.SUBJECTS.push({
-            PNO,
-            PCODE,
-            PNAME,
-            CR,
-            GRPTS,
-            TGRP,
-            EXAMMY,
-            GR,
-            ATTEMPT,
-          });
         }
       }
-      if (records) {
+      if (Object.values(records).length > 0) {
         // sort all students data based on students ID
         const sortedRecords = Object.values(records).sort((a, b) => {
           const aID = parseInt(a.ID.slice(1), 10);
@@ -248,7 +306,7 @@ const enggExcelController = {
           student.ENGG_RECORDS.forEach((record: Sem_Details, index: number) => {
             if (record.SEM_CURRENT_REMS != 0) {
               record.SUBJECTS.forEach((sub: any) => {
-                if (invalidGrades.includes(sub.GR.toUpperCase())){
+                if (invalidGrades.includes(sub.GR.toUpperCase())) {
                   student.CURRENT_REMEDIALS.push({
                     SEM: index + 1,
                     PNO: sub.PNO,
@@ -275,18 +333,6 @@ const enggExcelController = {
       }
       res.status(201).json({ message: "success" });
     } catch (error: any) {
-      if (error.code === 11000) {
-        const regex = /index: (.+) dup key: { (\w+): "(.*)" }/;
-
-        const match = error.message.match(regex);
-
-        if (match) {
-          return res.status(500).json({
-            message: `Duplicate value for field ${match[2]}: ${match[3]}`,
-          });
-        }
-        return res.status(500).json({ message: "internal error" });
-      }
       return res.status(500).json({
         message: "An error occurred while processing the file",
         error: error.message,
