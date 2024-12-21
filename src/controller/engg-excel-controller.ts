@@ -109,6 +109,7 @@ const enggExcelController = {
           if (!Dated_Record) {
             Dated_Record = {
               EXAMMY: EXAMMY,
+              OBTAINED_CR:0,
               SGPA: 0,
               CGPA: 0,
               SUBJECTS: [],
@@ -126,7 +127,6 @@ const enggExcelController = {
             CR,
             GRPTS,
             TGRP,
-            EXAMMY,
             GR,
             ATTEMPT,
           });
@@ -194,6 +194,8 @@ const enggExcelController = {
                 CGPA,
                 SGPA,
                 TCR,
+                OBTAINED_CR:0,
+                EXAMMY,
                 SEM_TOTAL_REMS: 0,
                 SEM_CURRENT_REMS: 0,
                 SUBJECTS: [],
@@ -209,7 +211,6 @@ const enggExcelController = {
               CR,
               GRPTS,
               TGRP,
-              EXAMMY,
               GR,
               ATTEMPT,
             });
@@ -226,6 +227,8 @@ const enggExcelController = {
                 CGPA,
                 SGPA,
                 TCR,
+                OBTAINED_CR:0,
+                EXAMMY,
                 SEM_TOTAL_REMS: 0,
                 SEM_CURRENT_REMS: 0,
                 SUBJECTS: [],
@@ -250,7 +253,6 @@ const enggExcelController = {
                 CR,
                 GRPTS,
                 TGRP,
-                EXAMMY,
                 GR,
                 ATTEMPT,
               };
@@ -263,7 +265,6 @@ const enggExcelController = {
               subject_record.GR=GR;
               subject_record.GRPTS=GRPTS;
               subject_record.TGRP=TGRP;
-              subject_record.EXAMMY=EXAMMY;
               subject_record.ATTEMPT=ATTEMPT;
             }
 

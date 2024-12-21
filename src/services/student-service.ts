@@ -65,11 +65,12 @@ const studentServices = {
       }
 
       student.OBTAINED_CREDITS = new Array(8).fill(0);
-      student.TOTAL_CREDITS = new Array(8).fill(0);
-      
-      student.ENGG_RECORDS.forEach((sem: Sem_Details) => {
-        sem.SUBJECTS.forEach((sub: Subject) => {
+      student.TOTAL_CREDITS = new Array(8).fill(0);      
+      student.ENGG_RECORDS.forEach((sem: Sem_Details,semIndex:number) => {
+        student.ENGG_RECORDS[semIndex].OBTAINED_CR =0;
+        sem.SUBJECTS.forEach((sub: Subject, subIndex:number) => {
           if (sem.SEM >= 1 && sem.SEM <= 8) {
+            student.ENGG_RECORDS[semIndex].OBTAINED_CR += sub.TGRP;
             student.OBTAINED_CREDITS[sem.SEM - 1] += sub.TGRP || 0;
             student.TOTAL_CREDITS[sem.SEM - 1] += sub.CR || 0;
           }
@@ -106,9 +107,12 @@ const studentServices = {
           calculateSGPACGPA(sem, sem.SEM - 1);
         }
       });
-      student.REMEDIAL_RECORDS.forEach((sem: Remedial_Details) => {
-        sem.REMEDIAL_DATES.forEach((Dated_Record: Remedial_Sem_Details) => {
-          Dated_Record.SUBJECTS.forEach((sub: Subject) => {
+      
+      student.REMEDIAL_RECORDS.forEach((sem: Remedial_Details,semIndex:number) => {
+        sem.REMEDIAL_DATES.forEach((Dated_Record: Remedial_Sem_Details,dateIndex:number) => {
+          student.REMEDIAL_RECORDS[semIndex].REMEDIAL_DATES[dateIndex].OBTAINED_CR = 0;
+          Dated_Record.SUBJECTS.forEach((sub: Subject,subIndex:number) => {
+            student.REMEDIAL_RECORDS[semIndex].REMEDIAL_DATES[dateIndex].OBTAINED_CR+= sub.TGRP || 0;
             if (sem.SEM >= 1 && sem.SEM <= 8) {
               student.OBTAINED_CREDITS[sem.SEM - 1] += sub.TGRP || 0;
             }
