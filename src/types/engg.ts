@@ -32,7 +32,6 @@ export interface Row_Data {
     GRPTS: number;
     TGRP: number;
     ATTEMPT: string;
-    EXAMMY: Date | null;
   }
   
   //define types for each sem record
@@ -41,6 +40,8 @@ export interface Row_Data {
     SGPA: number;
     CGPA: number;
     TCR: number;
+    OBTAINED_CR: number;
+    EXAMMY:Date | null;
     SEM_TOTAL_REMS: number;
     SEM_CURRENT_REMS: number;
     SUBJECTS: Subject[];
@@ -52,6 +53,7 @@ export interface Row_Data {
     EXAMMY: Date;
     CGPA:number;
     SGPA:number;
+    OBTAINED_CR:number;
     SUBJECTS: Subject[];
   }
 
