@@ -1,8 +1,7 @@
 import CrudRepository from "./crud-repository";
-const ImageRepository=
-{
-    async getImageById(data:string)
-    {
+const ImageRepository={
+    async getImageById(data:string){
+        
         try{
             const response=await CrudRepository.imageBy(data);
             return response;

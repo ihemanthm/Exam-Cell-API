@@ -15,8 +15,8 @@ interface Users extends Document, User {
   genJWT(): string;
 }
 
-const userSchema: Schema<Users> = new Schema(
-  {
+const userSchema: Schema<Users> = new Schema({
+
     name: { type: String, required: true },
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
@@ -24,7 +24,9 @@ const userSchema: Schema<Users> = new Schema(
   },
   { timestamps: true }
 );
+
 userSchema.pre<Users>("save", async function (next) {
+
   const user = this as Users;
   if (!user.isModified("password")) return next();
   const SALT: string = await bcrypt.genSalt(9);
@@ -38,6 +40,7 @@ userSchema.methods.comparePassword = function (inputPassword: string) {
 };
 
 userSchema.methods.genJWT = function (): string {
+  
   if (!JWT_KEY) {
     return "JWT_NOT_FOUND";
   }

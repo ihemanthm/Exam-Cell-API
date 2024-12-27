@@ -4,12 +4,12 @@ import ExcelJS from "exceljs";
 import { Engg_Record, Sem_Details } from "../types/engg";
 
 const studentController = {
-  //async function to get PUC details by ID
+  
   async getPUCDetails(req: Request, res: Response) {
+
     try {
       const ID = req.params.id;
 
-      // fetch puc data 
       const response = await studentServices.getPUCDetails(ID);
       if (!response) {
         return res.status(404).json({message:"student is not found"});
@@ -19,12 +19,12 @@ const studentController = {
       res.status(500).json({error:error});
     }
   },
-  //async function to get ENGG details by ID
+  
   async getEnggDetails(req: Request, res: Response) {
+
     try {
       const ID = req.params.id;
-      
-      // fetch engg data 
+
       const response = await studentServices.getEnggDetails(ID);
       if (!response) {
         return res.status(404).json({message:"student is not found"});
@@ -35,12 +35,10 @@ const studentController = {
     }
   },
   
-  //async function to get PUC Details by Regulation
   async getPUCDetailsByBatch(req: Request, res: Response) {
+
     try {
       const Batch = req.params.batch;
-
-      //fetch PUC details by regulation
       const response:any= await studentServices.getPUCDetailsByBatch(Batch);
       if (!response || response.length === 0) {
         return res.status(404).json({message:"Batch is not found"});
@@ -51,12 +49,10 @@ const studentController = {
     }
   },
 
-  // async function to get ENGG details by Regulation
   async getEnggDetailsByBatch(req: Request, res: Response) {
+
     try {
-      const Batch = req.params.batch;
-  
-      // fetch ENGG details by Regulation 
+      const Batch = req.params.batch; 
       const response:any= await studentServices.getEnggDetailsByBatch(Batch);
       if (!response || response.length === 0) {
         return res.status(404).json({message:"Batch is not found"});
@@ -66,11 +62,11 @@ const studentController = {
       return res.status(500).json({ error: error.message});
     }
   },
+
   async getRankListByBatch(req:Request,res:Response){
+
     try{
       const batch:string=req.params.batch;
-
-      // get rank list 
       const records:any=await studentServices.getRankListByBatch(batch);
       if(!records || records.length===0){
         return res.status(404).json({message:"Batch is not found"});
@@ -105,8 +101,6 @@ const studentController = {
           });
         });
       });
-
-      // Prepare to send the file
       res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
       res.setHeader(`Content-Disposition`, `attachment; filename=${batch}_Rank_List.xlsx`);
 

@@ -1,8 +1,9 @@
 import { certificateRepository } from "../repository/index";
 
 const certificateServices={
-    async updatePUCIssuedDate(data:{})
-    {
+
+    async updatePUCIssuedDate(data:{}){
+
         try
         {
             const response=await certificateRepository.updatePUCIssuedDate(data);
@@ -12,8 +13,9 @@ const certificateServices={
             return error;
         }
     },
-    async updateEnggIssuedDate(data:{})
-    {
+
+    async updateEnggIssuedDate(data:{}){
+
         try
         {
             const response=await certificateRepository.updateEnggIssuedDate(data);
@@ -23,6 +25,7 @@ const certificateServices={
             return error;
         }
     }
+    
 }
 
 export default certificateServices;

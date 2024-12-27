@@ -10,26 +10,31 @@ import {
 import { Puc_Record } from "../types/puc";
 
 const studentServices = {
+
   async getPUCDetails(data: string): Promise<Puc_Record | null | undefined> {
+
     try {
       const response: Promise<Puc_Record | null | undefined> =
         StudentRepository.getPUCDetails(data);
       return response;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   },
 
   async getEnggDetails(data: string): Promise<Engg_Record | null | undefined> {
+
     try {
       const response: Promise<Engg_Record | null | undefined> =
         StudentRepository.getEnggDetails(data);
       return response;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   },
+
   async getPUCDetailsByBatch(batch: string) {
+
     try {
       const response = StudentRepository.getPUCDetailsByBatch(batch);
       return response;
@@ -37,25 +42,30 @@ const studentServices = {
       return error;
     }
   },
+
   async getEnggDetailsByBatch(batch: string) {
+
     try {
       const response = StudentRepository.getEnggDetailsByBatch(batch);
       return response;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   },
+
   async getRankListByBatch(batch: string) {
+
     try {
       const response = StudentRepository.getRankListByBatch(batch);
       return response;
     } catch (error: any) {
-      console.log(error.message);
+      throw error;
     }
   },
+
   async updateCredits(ID: string): Promise<void> {
+
     try {
-      // Fetch the student record
       const student: Engg_Record | null | undefined = await this.getEnggDetails(
         ID
       );
@@ -76,13 +86,10 @@ const studentServices = {
           }
         });
       });
-
-      // Function to calculate SGPA and CGPA
       const calculateSGPACGPA = (
         sem: Remedial_Sem_Details | Remedial_Details | Sem_Details,
         index: number
       ) => {
-        // Calculate SGPA
         sem.SGPA =
           student.TOTAL_CREDITS[index] === 0
             ? 0
@@ -92,7 +99,6 @@ const studentServices = {
                 ).toFixed(2)
               );
 
-        // Calculate CGPA
         let obtained = 0;
         let total = 0;
         for (let i = 0; i <= index; i++) {
@@ -126,11 +132,11 @@ const studentServices = {
       });
 
       await CrudRepository.update(ENGG_RECORD, student);
-      // await student.save()
     } catch (error) {
       console.error("Error updating student credits:", error);
     }
   },
+  
 };
 
 export default studentServices;

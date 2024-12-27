@@ -19,8 +19,6 @@ export interface Row_Data {
   ATTEMPT: string;
   SEMCR: number;
 }
-
-// define entities of each subject
 export interface Subject {
   PNO: number;
   PCODE: string;
@@ -33,8 +31,6 @@ export interface Subject {
   CCMY: Date;
   TOTAL_ATTEMPTS:number;
 }
-
-// define entities of each record
 export interface Sem_Details {
   YEAR_SEM: string;
   SEMCR: number;
@@ -58,8 +54,6 @@ export interface Remedial_Records {
   ATTEMPT: string;
   TOTAL_ATTEMPTS:number;
 }
-
-// define entities of each student
 export interface Puc_Record{
   REGULATION: string;
   SNAME: string;

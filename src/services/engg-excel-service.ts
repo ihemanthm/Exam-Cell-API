@@ -1,7 +1,8 @@
 import { enggExcelRepository } from "../repository/index";
 const enggExcelServices={
-    async uploadExcelFile(data:{})
-    {
+
+    async uploadExcelFile(data:{}){
+        
         try{
             return await enggExcelRepository.uploadExcelFile(data);
         }catch(error)

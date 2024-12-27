@@ -1,5 +1,5 @@
 import express from 'express';
-import v1Routes from './v1/index';  // Ensure this path is correct and matches the TypeScript file
+import v1Routes from './v1/index'; 
 
 const router = express.Router();
 

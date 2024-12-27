@@ -6,7 +6,9 @@ interface singInData {
   password: string;
 }
 const UserServices = {
+
   async singUp(data: singInData) {
+    
     try {
       const isExists = await this.getUserByEmail(data.email);
       if (!isExists) {
@@ -19,7 +21,9 @@ const UserServices = {
       return error;
     }
   },
+
   async getUserByEmail(email: string) {
+
     try {
       const response = await UserRepository.getUserByEmail(email);
       return response;
@@ -27,7 +31,9 @@ const UserServices = {
       return error;
     }
   },
+
   async login(users:Users,password:string): Promise< any | string | null> {
+
     try {
       const match = await users.comparePassword(password);
       if (!match) {
@@ -36,10 +42,10 @@ const UserServices = {
       const token = users.genJWT();
       return token;
     } catch (error) {
-      console.log(error);
-      return error;
+      throw error;
     }
   },
+
 };
 
 export default UserServices;

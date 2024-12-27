@@ -1,4 +1,3 @@
-//Define types for Input excel file columns 
 export interface Row_Data {
     REGULATION: string;
     ID: string;
@@ -21,8 +20,6 @@ export interface Row_Data {
     DOJ: Date | null;
     EXAMMY: Date;
   }
-  
-  //define types for each subject record
   export interface Subject {
     PNO: number;
     PCODE: string;
@@ -33,8 +30,6 @@ export interface Row_Data {
     TGRP: number;
     ATTEMPT: string;
   }
-  
-  //define types for each sem record
   export interface Sem_Details {
     SEM: number;
     SGPA: number;
@@ -46,9 +41,6 @@ export interface Row_Data {
     SEM_CURRENT_REMS: number;
     SUBJECTS: Subject[];
   }
-  
-  // define types for each Remedial Sem details
-  // group them based on EXAMMY
   export interface Remedial_Sem_Details{
     EXAMMY: Date;
     CGPA:number;
@@ -56,8 +48,6 @@ export interface Row_Data {
     OBTAINED_CR:number;
     SUBJECTS: Subject[];
   }
-
-  //define types for entire remedial attempt records
   export interface Remedial_Details {
     SEM: number;
     SGPA: number;
@@ -67,8 +57,6 @@ export interface Row_Data {
     SEM_CURRENT_REMS: number;
     REMEDIAL_DATES:Remedial_Sem_Details[];
   }
-
-  //Deifne types for Current_Remedials
   export interface Current_Remedials {
     SEM: number;
     PNO: number;
@@ -82,8 +70,6 @@ export interface Row_Data {
     TCR: number;
     ATTEMPTS: number;
   }
-  
-  // define entities of each student record
   export interface Engg_Record {
     REGULATION: string;
     ID: string;
