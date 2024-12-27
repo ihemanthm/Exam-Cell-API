@@ -1,6 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-// Define the Subject interface
 interface Subject {
   PNO: number;
   PCODE: string;
@@ -13,8 +12,6 @@ interface Subject {
   ATTEMPT: string;
   TOTAL_ATTEMPTS: number;
 }
-
-// Define the RecordEntry interface
 interface Sem_Details {
   YEAR_SEM: string;
   SEM_NO: number;
@@ -23,7 +20,6 @@ interface Sem_Details {
   CURRENT_REMS: number;
   SUBJECTS: Subject[];
 }
-
 interface Remedial_Records {
   YEAR_SEM: string;
   SEM_NO: number;
@@ -39,8 +35,6 @@ interface Remedial_Records {
   ATTEMPT: string;
   TOTAL_ATTEMPT:number;
 }
-
-// Define the Record interface
 interface Puc_Record extends Document {
   REGULATION: string;
   SNAME: string;
@@ -53,8 +47,6 @@ interface Puc_Record extends Document {
   PUC_RECORDS: Sem_Details[];
   REMEDIAL_RECORDS: Remedial_Records[];
 }
-
-// Define the Mongoose schema for Record
 const pucRecordSchema: Schema<Puc_Record> = new mongoose.Schema({
   REGULATION: { type: String },
   SNAME: { type: String },
@@ -105,8 +97,6 @@ const pucRecordSchema: Schema<Puc_Record> = new mongoose.Schema({
     },
   ],
 });
-
-// Create the Record model
 const PUC_RECORD = mongoose.model<Puc_Record>("PUC_Record", pucRecordSchema);
 
 export default PUC_RECORD;

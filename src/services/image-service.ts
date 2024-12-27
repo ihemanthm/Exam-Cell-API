@@ -1,7 +1,7 @@
 import { ImageRepository } from "../repository";
 const imagesServices={
-    async getImageById(data:any)
-    {
+    async getImageById(data:any){
+
         try{
             const response= await ImageRepository.getImageById(data);
             if(!response)
@@ -9,7 +9,7 @@ const imagesServices={
                 return null;
             }
             return {
-                image: `http://localhost:8000/uploads/images/${data}.png` // Construct the image URL
+                image: `http://localhost:8000/uploads/images/${data}.png`
             };
         }catch(error)
         {

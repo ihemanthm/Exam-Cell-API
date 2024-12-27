@@ -7,6 +7,7 @@ import {
 import { Puc_Record } from "../types/puc";
 const CrudRepository = {
   async create(model: Model<any>, data: {}) {
+
     try {
       const result = await model.create(data);
       return result;
@@ -14,7 +15,9 @@ const CrudRepository = {
       throw error;
     }
   },
+
   async uploadExcel(model: Model<any>, data: {}) {
+
     try {
       const response = await model.create(data);
       return response;
@@ -22,31 +25,39 @@ const CrudRepository = {
       throw error;
     }
   },
+
   async Engg_findBy(model: Model<any>, data: {}): Promise<Engg_Record | null | undefined>{
+
     try {
       const response:Engg_Record | null= await model.findOne( {...data} );
       return response;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   },
+
   async Puc_findBy(model: Model<any>, data: {}): Promise<Puc_Record | null | undefined>{
+
     try {
       const response:Puc_Record | null= await model.findOne( {...data} );
       return response;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   },
+
   async findBy(model: Model<any>, data: {}){
+
     try {
       const response= await model.findOne( {...data} );
       return response;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   },
+
   async findAllBy(model: Model<any>, batch: String) {
+
     try {
       const response = await model.find({ REGULATION: batch });
       if (!response || response.length === 0) {
@@ -54,11 +65,12 @@ const CrudRepository = {
       }
       return response;
     } catch (error) {
-      console.log(error);
-      return "An error occurred while fetching data";
+      throw error;
     }
   },
+
   async findAllByBatchAndSort(model: Model<any>, batch: string) {
+
     try {
       const response = await model.find({ REGULATION: batch });
   
@@ -70,11 +82,13 @@ const CrudRepository = {
          return calculateCGPA(b) - calculateCGPA(a);
       });
       return sortedStudents;
-    } catch (error:any) {
-      console.log(error.message);
+    } catch (error) {
+      throw error;
     }
   },
+
   async groupByRegulation(model:Model<any>){
+
     try{
       const response = await model.aggregate([
         {
@@ -86,10 +100,12 @@ const CrudRepository = {
       ]);
       return response;
     }catch(error){
-      console.log(error);
+      throw error;
     }
   },
+
   async imageBy(ID: string) {
+
     const filePath = path.join(__dirname, "../","../uploads/images/", `${ID}.png`);
     try {
       await fsPromises.access(filePath);
@@ -99,8 +115,8 @@ const CrudRepository = {
     }
   },
 
-  async update(model:Model<any>,data:{ ID: string, [key: string]: any })
-  {
+  async update(model:Model<any>,data:{ ID: string, [key: string]: any }){
+
     const {ID,...updatedData}=data;
     try{
       const response=await model.findOneAndUpdate(
@@ -115,7 +131,9 @@ const CrudRepository = {
     }
   },
 };
+
 function calculateCGPA(a:Engg_Record):number{
+
   let a_obtainedCredits=0;
   let a_totalCredits=0;
   for(let i=0;i<8;i++){
@@ -127,4 +145,5 @@ function calculateCGPA(a:Engg_Record):number{
   }
   return a_obtainedCredits/a_totalCredits;
 }
+
 export default CrudRepository;

@@ -1,10 +1,9 @@
 import {Users} from '../models/index';
 import CrudRepository from './crud-repository';
 
-const UserRepository=
-{
-    async singUp(data:{email:string,name:string,password:string})
-    {
+const UserRepository={
+    async singUp(data:{email:string,name:string,password:string}){
+
         try
         {
             const response=await CrudRepository.create(Users,data);
@@ -14,8 +13,9 @@ const UserRepository=
             return error;
         }
     },
-    async getUserByEmail(email:string)
-    {
+
+    async getUserByEmail(email:string){
+
         try
         {
             const response=await CrudRepository.findBy(Users,{email});
@@ -26,6 +26,7 @@ const UserRepository=
         }
         
     }
+    
 };
 
 export default UserRepository;

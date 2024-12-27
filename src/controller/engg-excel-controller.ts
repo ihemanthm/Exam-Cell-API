@@ -1,15 +1,10 @@
-// import global/dev dependencies
 import xlsx from "xlsx";
 import { Request, Response } from "express";
-
-// import internal dependencies
 import { enggExcelServices, studentServices } from "../services";
 import { CrudRepository } from "../repository";
 
-// import model
 import { ENGG_RECORD } from "../models";
 
-// import data types
 import {
   Row_Data,
   Subject,
@@ -24,11 +19,9 @@ interface ExtendedRequest extends Request {
 }
 
 const enggExcelController = {
-  //async function to handle the excel upload
-  async uploadExcel(
-    req: ExtendedRequest,
-    res: Response
-  ): Promise<Response | any> {
+  
+  async uploadExcel(req: ExtendedRequest, res: Response):Promise<Response | any> {
+
     try {
       if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
@@ -36,8 +29,6 @@ const enggExcelController = {
       const filePath: string = req.file.path;
       const workbook = xlsx.readFile(filePath);
       const sheetName = workbook.SheetNames[0];
-
-      //formatting the date fields
       const data: Row_Data[] = xlsx.utils.sheet_to_json(
         workbook.Sheets[sheetName],
         {
@@ -47,7 +38,6 @@ const enggExcelController = {
       );
 
       const records: { [key: string]: Engg_Record } = {};
-
       const invalidGrades = ["R", "AB", "DETAINED", "MP"];
 
       for (const row of data) {
@@ -73,20 +63,16 @@ const enggExcelController = {
           DOJ,
           EXAMMY,
         } = row;
-        // get student by Id from model
         const student: Engg_Record | undefined | null =
-          await studentServices.getEnggDetails(ID);
-
+        await studentServices.getEnggDetails(ID);
         if (ATTEMPT.toUpperCase() === "REMEDIAL") {
+
           if (!student) {
             return res.status(404).json({ message: "Student Not Found" });
           }
 
-          //search for the record
           let record: Remedial_Details | undefined =
-            student.REMEDIAL_RECORDS.find((r: any) => r.SEM == SEM);
-
-          //create new record if not exists
+          student.REMEDIAL_RECORDS.find((r: any) => r.SEM == SEM);
           if (!record) {
             record = {
               SEM,
@@ -131,7 +117,6 @@ const enggExcelController = {
             ATTEMPT,
           });
 
-          //update the CURRENT_REMEDIALS attribute
           if (!invalidGrades.includes(GR.toUpperCase())) {
             student.CURRENT_REMS -= 1;
             student.CURRENT_REMEDIALS = student.CURRENT_REMEDIALS.filter(
@@ -139,7 +124,6 @@ const enggExcelController = {
             );
           }
 
-          // Sort records based on paperNumber
           student.REMEDIAL_RECORDS.forEach((sem: Remedial_Details) => {
             sem.REMEDIAL_DATES.forEach((record: Remedial_Sem_Details) => {
               record.SUBJECTS.sort((a: Subject, b: Subject) => a.PNO - b.PNO);
@@ -150,13 +134,11 @@ const enggExcelController = {
             );
           });
 
-          //sort the semesters based on sem number
           student.REMEDIAL_RECORDS.sort(
             (a: Remedial_Details, b: Remedial_Details) =>
               Number(a.SEM) - Number(b.SEM)
           );
 
-          // await student.save();
           await CrudRepository.update(ENGG_RECORD, student);
           await studentServices.updateCredits(student.ID);
         } else {
@@ -183,11 +165,8 @@ const enggExcelController = {
                 CURRENT_REMEDIALS: [],
               };
             }
-
-            //search if record already exists
             let record = records[ID].ENGG_RECORDS.find((r) => r.SEM === SEM);
 
-            //create new record if not exists
             if (!record) {
               record = {
                 SEM,
@@ -203,7 +182,6 @@ const enggExcelController = {
               records[ID].ENGG_RECORDS.push(record);
             }
 
-            //store the subjects data for each subject
             record.SUBJECTS.push({
               PNO,
               PCODE,
@@ -276,31 +254,26 @@ const enggExcelController = {
         }
       }
       if (Object.values(records).length > 0) {
-        // sort all students data based on students ID
         const sortedRecords = Object.values(records).sort((a, b) => {
           const aID = parseInt(a.ID.slice(1), 10);
           const bID = parseInt(b.ID.slice(1), 10);
           return aID - bID;
         });
-
-        //sort each students subject data based on Paper number
         sortedRecords.forEach((student) => {
           student.ENGG_RECORDS.forEach((record) => {
             record.SUBJECTS.sort((a, b) => a.PNO - b.PNO);
 
-            // update the individual sem remedials counts
             record.SUBJECTS.forEach((sub) => {
               if (invalidGrades.includes(sub.GR.toUpperCase())) {
                 record.SEM_TOTAL_REMS += 1;
                 record.SEM_CURRENT_REMS += 1;
               }
             });
-            //update the total remedials count
+            
             student.TOTAL_REMS += record.SEM_TOTAL_REMS;
             student.CURRENT_REMS += record.SEM_CURRENT_REMS;
           });
 
-          //sort the semesters based on sem number
           student.ENGG_RECORDS.sort((a, b) => Number(a.SEM) - Number(b.SEM));
         });
         sortedRecords.forEach((student) => {
@@ -326,7 +299,7 @@ const enggExcelController = {
             }
           });
         });
-        //call function to update each student data in ascnending order
+        
         for (const student of sortedRecords) {
           await enggExcelServices.uploadExcelFile(student);
           await studentServices.updateCredits(student.ID);
@@ -340,6 +313,7 @@ const enggExcelController = {
       });
     }
   },
+  
 };
 
 export default enggExcelController;

@@ -1,6 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-// Define the Subject interface
 interface Subject {
   PNO: number;
   PCODE: string;
@@ -12,7 +11,7 @@ interface Subject {
   ATTEMPT: string;
 }
 
-// Define the SemDetails interface
+
 interface Sem_Details {
   SEM: number;
   SGPA: number;
@@ -42,7 +41,6 @@ interface Remedial_Details {
   REMEDIAL_DATES:Remedial_Sem_Details[];
 }
 
-//Deifne Current_Remedials
 interface Current_Remedials {
   SEM: number;
   PNO: number;
@@ -57,7 +55,6 @@ interface Current_Remedials {
   ATTEMPTS: number;
 }
 
-// Define the Record interface
 interface Engg_Record extends Document {
   REGULATION: string;
   ID: string;
@@ -79,7 +76,6 @@ interface Engg_Record extends Document {
   CURRENT_REMEDIALS: Current_Remedials[];
 }
 
-// Define the Mongoose schema for Record
 const enggRecordSchema: Schema<Engg_Record> = new mongoose.Schema({
   REGULATION: { type: String },
   SNAME: { type: String },
@@ -165,7 +161,6 @@ const enggRecordSchema: Schema<Engg_Record> = new mongoose.Schema({
   ],
 });
 
-// Create the Record model
 const ENGG_RECORD = mongoose.model<Engg_Record>(
   "ENGG_Record",
   enggRecordSchema
