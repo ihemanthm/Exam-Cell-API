@@ -37,6 +37,9 @@ router.post('/uploadImages',upload.single('zip'),imagesController.uploadImages);
 router.get('/getStudentImage/:id',imagesController.getImageById);
 
 router.post('/upload/scannedCopy', upload.single("SCANNED_COPY"),certificateController.storeCertificates);
+router.post('/upload/PUCSnoExcel', upload.single("puc"),certificateController.updatePUCExcelFile);
+router.post('/upload/EnggSnoExcel', upload.single("engg"),certificateController.updateEnggExcelFile);
+
 
 router.put('/update/PUCCertificateDate',certificateController.updatePUCIssuedDate);
 router.put('/update/EnggCertificateDate',certificateController.updateEnggIssuedDate);
