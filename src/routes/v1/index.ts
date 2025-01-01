@@ -40,7 +40,6 @@ router.post('/upload/scannedCopy', upload.single("SCANNED_COPY"),certificateCont
 router.post('/upload/PUCSnoExcel', upload.single("puc"),certificateController.updatePUCExcelFile);
 router.post('/upload/EnggSnoExcel', upload.single("engg"),certificateController.updateEnggExcelFile);
 
-
 router.put('/update/PUCCertificateDate',certificateController.updatePUCIssuedDate);
 router.put('/update/EnggCertificateDate',certificateController.updateEnggIssuedDate);
 
@@ -49,5 +48,7 @@ router.post('/login',userController.login);
 
 router.get('/PucBackup',BackupController.pucBackup);
 router.get('/EnggBackup',BackupController.enggBackup);
+
+router.get('/getRegulationAndCount',userController.getregulationsAndCount);
 
 export default router;

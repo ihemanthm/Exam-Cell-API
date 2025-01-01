@@ -1,5 +1,5 @@
-import { UserRepository } from "../repository";
-import { Users } from "../models/index";
+import { CrudRepository, UserRepository } from "../repository";
+import { ENGG_RECORD, PUC_RECORD, Users } from "../models/index";
 interface singInData {
   name: string;
   email: string;
@@ -46,6 +46,10 @@ const UserServices = {
     }
   },
 
+  async getRegulationsAndCount(){
+
+    return CrudRepository.getRegulationsAndCount(ENGG_RECORD, PUC_RECORD);
+  }
 };
 
 export default UserServices;
