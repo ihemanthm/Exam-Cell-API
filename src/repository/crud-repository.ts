@@ -26,30 +26,30 @@ const CrudRepository = {
     }
   },
 
-  async Engg_findBy(model: Model<any>, data: {}): Promise<Engg_Record | null | undefined>{
+  async Engg_findBy(model: Model<any>, data: {}): Promise<Engg_Record | null | undefined> {
 
     try {
-      const response:Engg_Record | null= await model.findOne( {...data} );
+      const response: Engg_Record | null = await model.findOne({ ...data });
       return response;
     } catch (error) {
       throw error;
     }
   },
 
-  async Puc_findBy(model: Model<any>, data: {}): Promise<Puc_Record | null | undefined>{
+  async Puc_findBy(model: Model<any>, data: {}): Promise<Puc_Record | null | undefined> {
 
     try {
-      const response:Puc_Record | null= await model.findOne( {...data} );
+      const response: Puc_Record | null = await model.findOne({ ...data });
       return response;
     } catch (error) {
       throw error;
     }
   },
 
-  async findBy(model: Model<any>, data: {}){
+  async findBy(model: Model<any>, data: {}) {
 
     try {
-      const response= await model.findOne( {...data} );
+      const response = await model.findOne({ ...data });
       return response;
     } catch (error) {
       throw error;
@@ -73,13 +73,13 @@ const CrudRepository = {
 
     try {
       const response = await model.find({ REGULATION: batch });
-  
+
       if (!response || response.length === 0) {
         return response;
       }
-      
+
       const sortedStudents = response.sort((a, b) => {
-         return calculateCGPA(b) - calculateCGPA(a);
+        return calculateCGPA(b) - calculateCGPA(a);
       });
       return sortedStudents;
     } catch (error) {
@@ -87,9 +87,9 @@ const CrudRepository = {
     }
   },
 
-  async groupByRegulation(model:Model<any>){
+  async groupByRegulation(model: Model<any>) {
 
-    try{
+    try {
       const response = await model.aggregate([
         {
           $group: {
@@ -99,14 +99,14 @@ const CrudRepository = {
         },
       ]);
       return response;
-    }catch(error){
+    } catch (error) {
       throw error;
     }
   },
 
   async imageBy(ID: string) {
 
-    const filePath = path.join(__dirname, "../","../uploads/images/", `${ID}.png`);
+    const filePath = path.join(__dirname, "../", "../uploads/images/", `${ID}.png`);
     try {
       await fsPromises.access(filePath);
       return { image: `http://localhost:8000/uploads/images/${ID}` };
@@ -115,35 +115,70 @@ const CrudRepository = {
     }
   },
 
-  async update(model:Model<any>,data:{ ID: string, [key: string]: any }){
+  async update(model: Model<any>, data: { ID: string, [key: string]: any }) {
 
-    const {ID,...updatedData}=data;
-    try{
-      const response=await model.findOneAndUpdate(
-        {ID:ID},
-        {$set:updatedData},
-        {new:true,useFindAndModify:true});
+    const { ID, ...updatedData } = data;
+    try {
+      const response = await model.findOneAndUpdate(
+        { ID: ID },
+        { $set: updatedData },
+        { new: true, useFindAndModify: true });
       return response;
     }
-    catch(error)
-    {
+    catch (error) {
       throw error;
     }
   },
+
+  async getRegulationsAndCount(model1: Model<any>, model2: Model<any>) {
+
+    try {
+      const enggRecords = await model1.find({});
+      const pucRecords = await model2.find({});
+
+      const regulationCounts: {
+        engg: { [key: string]: number },
+        puc: { [key: string]: number }
+      } = { engg: {}, puc: {} };
+
+      enggRecords.forEach(record => {
+        const regulation = record.REGULATION;
+        if (regulationCounts.engg[regulation]) {
+          regulationCounts.engg[regulation]++;
+        } else {
+          regulationCounts.engg[regulation] = 1;
+        }
+      });
+
+      pucRecords.forEach(record => {
+        const regulation = record.REGULATION;
+        if (regulationCounts.puc[regulation]) {
+          regulationCounts.puc[regulation]++;
+        } else {
+          regulationCounts.puc[regulation] = 1;
+        }
+      });
+      
+      return regulationCounts;
+    } catch (error) {
+      console.log("error fetching the regulation counts");
+      throw error;
+    }
+  }
 };
 
-function calculateCGPA(a:Engg_Record):number{
+function calculateCGPA(a: Engg_Record): number {
 
-  let a_obtainedCredits=0;
-  let a_totalCredits=0;
-  for(let i=0;i<8;i++){
-    a_obtainedCredits+=a.OBTAINED_CREDITS[i];
-    a_totalCredits+=a.TOTAL_CREDITS[i];
+  let a_obtainedCredits = 0;
+  let a_totalCredits = 0;
+  for (let i = 0; i < 8; i++) {
+    a_obtainedCredits += a.OBTAINED_CREDITS[i];
+    a_totalCredits += a.TOTAL_CREDITS[i];
   }
-  if(a_totalCredits===0){
+  if (a_totalCredits === 0) {
     return 0;
   }
-  return a_obtainedCredits/a_totalCredits;
+  return a_obtainedCredits / a_totalCredits;
 }
 
 export default CrudRepository;

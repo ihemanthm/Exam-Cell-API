@@ -39,9 +39,12 @@ const userController = {
     } catch (error) {
       return res.status(500).json({"message":"something went wrong","error":error});
     }
-
   },
+  async getregulationsAndCount(req:Request, res:Response){
 
+    const regulationCounts = await UserServices.getRegulationsAndCount();
+    return res.status(200).json(regulationCounts);
+  },
 };
 
 export default userController;
