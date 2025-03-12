@@ -43,12 +43,14 @@ router.post('/upload/EnggSnoExcel', upload.single("engg"),certificateController.
 router.put('/update/PUCCertificateDate',certificateController.updatePUCIssuedDate);
 router.put('/update/EnggCertificateDate',certificateController.updateEnggIssuedDate);
 
-router.post('/signup',userController.singUp);
-router.post('/login',userController.login);
-
 router.get('/PucBackup',BackupController.pucBackup);
 router.get('/EnggBackup',BackupController.enggBackup);
 
 router.get('/getRegulationAndCount',userController.getregulationsAndCount);
+
+router.get('/getABCData', studentController.getABCData);
+
+router.post('/signup',userController.singUp);
+router.post('/login',userController.login);
 
 export default router;
